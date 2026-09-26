@@ -3,34 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Data Analyzer</title>
+    <title>AI Data Analytics Studio</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>AI Data Analyzer</h1>
-        <p>Upload your CSV or Excel file for instant analytics</p>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">⚡ <span>DataVision AI</span></div>
+            <p>Transform raw CSV & Excel datasets into actionable visual insights instantly.</p>
+        </header>
 
-        <div class="upload-box">
-            <input type="file" id="fileInput" accept=".csv, .xlsx, .xls">
-            <button onclick="uploadAndAnalyze()">Analyze Data</button>
-        </div>
+        <main class="main-content">
+            <!-- Upload Box -->
+            <section class="upload-card">
+                <div class="file-drop-area">
+                    <input type="file" id="fileInput" accept=".csv, .xlsx, .xls">
+                    <div class="upload-icon">📊</div>
+                    <p class="upload-text">Choose CSV or Excel file to analyze</p>
+                    <span class="file-name" id="fileNameDisplay">No file selected</span>
+                </div>
+                <button id="analyzeBtn" onclick="uploadAndAnalyze()">Analyze Dataset</button>
+                <div id="loader" class="loader hidden">Analyzing data... Please wait.</div>
+            </section>
 
-        <div id="loading" style="display:none;">Analyzing Data... Please wait.</div>
+            <!-- Results Section -->
+            <div id="resultsContainer" class="results-container hidden">
+                <!-- Data Overview Cards -->
+                <section class="overview-grid">
+                    <div class="stat-box">
+                        <span class="stat-label">File Analyzed</span>
+                        <span class="stat-value" id="resFilename">-</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Total Rows</span>
+                        <span class="stat-value" id="resRows">-</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Total Columns</span>
+                        <span class="stat-value" id="resCols">-</span>
+                    </div>
+                </section>
 
-        <div id="results" style="display:none;">
-            <h2>Data Overview</h2>
-            <p id="fileStats"></p>
+                <!-- AI Key Insights -->
+                <section class="card">
+                    <h3>💡 Automated Key Insights</h3>
+                    <ul id="insightsList" class="insights-list"></ul>
+                </section>
 
-            <h2>Summary Statistics</h2>
-            <div id="statsTable"></div>
+                <!-- Visual Chart -->
+                <section class="card">
+                    <h3>📈 Visual Data Comparison</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="dataChart"></canvas>
+                    </div>
+                </section>
 
-            <h2>Visual Chart</h2>
-            <canvas id="myChart" width="400" height="200"></canvas>
-        </div>
+                <!-- Summary Statistics Table -->
+                <section class="card">
+                    <h3>🔢 Summary Statistics Table</h3>
+                    <div class="table-responsive">
+                        <table id="statsTable">
+                            <thead>
+                                <tr>
+                                    <th>Metric Column</th>
+                                    <th>Total (Sum)</th>
+                                    <th>Average</th>
+                                    <th>Max Value</th>
+                                    <th>Min Value</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
-
