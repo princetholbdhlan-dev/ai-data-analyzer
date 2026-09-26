@@ -1,4 +1,4 @@
-const BACKEND_URL = "https://ai-data-analyzer-f3kf.onrender.com/analyze";
+const BACKEND_URL = "https://ai-data-analyzer-jjkj.onrender.com/analyze";
 
 async function uploadAndAnalyze() {
     const fileInput = document.getElementById("fileInput");
