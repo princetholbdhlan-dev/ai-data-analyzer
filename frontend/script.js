@@ -1,5 +1,6 @@
 const BACKEND_URL = "https://ai-data-analyzer-jjkj.onrender.com/analyze";
 let chartInstance = null;
+let cleanedCSVData = "";
 
 document.getElementById('fileInput').addEventListener('change', function(e) {
     const fileName = e.target.files[0] ? e.target.files[0].name : "No file selected";
@@ -33,6 +34,7 @@ async function uploadAndAnalyze() {
         const result = await response.json();
 
         if (response.ok && result.success) {
+            cleanedCSVData = result.data.cleaned_csv;
             renderDashboard(result.data);
         } else {
             alert("Analysis failed: " + (result.detail || "Server error"));
@@ -46,12 +48,10 @@ async function uploadAndAnalyze() {
 }
 
 function renderDashboard(data) {
-    // 1. Overview Cards
     document.getElementById('resFilename').textContent = data.filename;
     document.getElementById('resRows').textContent = data.rows;
-    document.getElementById('resCols').textContent = data.columns;
+    document.getElementById('resDuplicates').textContent = data.duplicates_removed;
 
-    // 2. Insights List
     const insightsList = document.getElementById('insightsList');
     insightsList.innerHTML = '';
     data.insights.forEach(insight => {
@@ -60,7 +60,6 @@ function renderDashboard(data) {
         insightsList.appendChild(li);
     });
 
-    // 3. Render Chart
     const ctx = document.getElementById('dataChart').getContext('2d');
     if (chartInstance) {
         chartInstance.destroy();
@@ -84,7 +83,6 @@ function renderDashboard(data) {
         }
     });
 
-    // 4. Statistics Table
     const tbody = document.querySelector('#statsTable tbody');
     tbody.innerHTML = '';
 
@@ -100,6 +98,27 @@ function renderDashboard(data) {
         tbody.appendChild(tr);
     }
 
-    // Show Results Section
     document.getElementById('resultsContainer').classList.remove('hidden');
+}
+
+function downloadCleanCSV() {
+    if (!cleanedCSVData) return;
+    const blob = new Blob([cleanedCSVData], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'cleaned_dataset.csv';
+    a.click();
+}
+
+function exportPDFReport() {
+    const element = document.getElementById('reportContent');
+    const opt = {
+        margin:       0.5,
+        filename:     'Analytics_Report.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
 }
