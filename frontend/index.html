@@ -6,77 +6,81 @@
     <title>AI Data Analytics Studio</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- PDF Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
     <div class="app-container">
         <header class="app-header">
-            <div class="logo">⚡ <span>DataVision AI</span></div>
-            <p>Transform raw CSV & Excel datasets into actionable visual insights instantly.</p>
+            <div class="logo">⚡ <span>DataVision AI Studio</span></div>
+            <p>Automated Data Cleaning, Statistical Analytics & PDF Reporting</p>
         </header>
 
         <main class="main-content">
-            <!-- Upload Box -->
             <section class="upload-card">
                 <div class="file-drop-area">
                     <input type="file" id="fileInput" accept=".csv, .xlsx, .xls">
                     <div class="upload-icon">📊</div>
-                    <p class="upload-text">Choose CSV or Excel file to analyze</p>
+                    <p class="upload-text">Choose CSV or Excel dataset to analyze</p>
                     <span class="file-name" id="fileNameDisplay">No file selected</span>
                 </div>
                 <button id="analyzeBtn" onclick="uploadAndAnalyze()">Analyze Dataset</button>
-                <div id="loader" class="loader hidden">Analyzing data... Please wait.</div>
+                <div id="loader" class="loader hidden">Cleaning & Analyzing Data... Please wait.</div>
             </section>
 
-            <!-- Results Section -->
             <div id="resultsContainer" class="results-container hidden">
-                <!-- Data Overview Cards -->
-                <section class="overview-grid">
-                    <div class="stat-box">
-                        <span class="stat-label">File Analyzed</span>
-                        <span class="stat-value" id="resFilename">-</span>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-label">Total Rows</span>
-                        <span class="stat-value" id="resRows">-</span>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-label">Total Columns</span>
-                        <span class="stat-value" id="resCols">-</span>
-                    </div>
-                </section>
+                <!-- Action Bar for Download Options -->
+                <div class="action-bar">
+                    <button class="btn-download" onclick="downloadCleanCSV()">📥 Export Cleaned Data</button>
+                    <button class="btn-pdf" onclick="exportPDFReport()">📄 Download PDF Report</button>
+                </div>
 
-                <!-- AI Key Insights -->
-                <section class="card">
-                    <h3>💡 Automated Key Insights</h3>
-                    <ul id="insightsList" class="insights-list"></ul>
-                </section>
+                <div id="reportContent">
+                    <section class="overview-grid">
+                        <div class="stat-box">
+                            <span class="stat-label">File Analyzed</span>
+                            <span class="stat-value" id="resFilename">-</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Total Rows</span>
+                            <span class="stat-value" id="resRows">-</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Duplicates Cleaned</span>
+                            <span class="stat-value" id="resDuplicates">0</span>
+                        </div>
+                    </section>
 
-                <!-- Visual Chart -->
-                <section class="card">
-                    <h3>📈 Visual Data Comparison</h3>
-                    <div class="chart-wrapper">
-                        <canvas id="dataChart"></canvas>
-                    </div>
-                </section>
+                    <section class="card">
+                        <h3>💡 Automated Key Insights</h3>
+                        <ul id="insightsList" class="insights-list"></ul>
+                    </section>
 
-                <!-- Summary Statistics Table -->
-                <section class="card">
-                    <h3>🔢 Summary Statistics Table</h3>
-                    <div class="table-responsive">
-                        <table id="statsTable">
-                            <thead>
-                                <tr>
-                                    <th>Metric Column</th>
-                                    <th>Total (Sum)</th>
-                                    <th>Average</th>
-                                    <th>Max Value</th>
-                                    <th>Min Value</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </section>
+                    <section class="card">
+                        <h3>📈 Visual Comparison Chart</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="dataChart"></canvas>
+                        </div>
+                    </section>
+
+                    <section class="card">
+                        <h3>🔢 Statistical Summary Table</h3>
+                        <div class="table-responsive">
+                            <table id="statsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Metric Column</th>
+                                        <th>Total (Sum)</th>
+                                        <th>Average</th>
+                                        <th>Max Value</th>
+                                        <th>Min Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
             </div>
         </main>
     </div>
