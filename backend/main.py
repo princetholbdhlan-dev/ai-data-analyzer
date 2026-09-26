@@ -13,7 +13,7 @@ app.add_middleware(
 )
 
 @app.get("/")
-def root():
+def read_root():
     return {"status": "online", "message": "AI Data Analyzer API is running"}
 
 @app.post("/analyze")
