@@ -1,18 +1,118 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #f8fafc;
+    color: #1e293b;
+    padding: 20px 12px;
+    display: flex;
+    justify-content: center;
+}
+
+.app-container {
+    max-width: 800px;
+    width: 100%;
+}
+
+.app-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.app-header .logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.app-header .logo span {
+    color: #2563eb;
+}
+
+.app-header p {
+    color: #64748b;
+    margin-top: 4px;
+    font-size: 13px;
+}
+
+.upload-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.file-drop-area {
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    padding: 20px 10px;
+    background: #f8fafc;
+    position: relative;
+}
+
+.file-drop-area input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.upload-icon {
+    font-size: 32px;
+    margin-bottom: 6px;
+}
+
+.upload-text {
+    font-weight: 600;
+    color: #334155;
+    font-size: 14px;
+}
+
+.file-name {
+    display: block;
+    font-size: 12px;
+    color: #2563eb;
+    margin-top: 6px;
+    font-weight: 500;
+}
+
+#analyzeBtn {
+    margin-top: 15px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+}
+
 .action-bar {
     display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
-    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
 .btn-download, .btn-pdf {
-    padding: 10px 18px;
-    font-size: 13px;
+    flex: 1;
+    padding: 10px 12px;
+    font-size: 12px;
     font-weight: 600;
     border-radius: 8px;
     border: none;
     cursor: pointer;
-    transition: transform 0.1s ease;
+    text-align: center;
 }
 
 .btn-download {
@@ -25,6 +125,90 @@
     color: white;
 }
 
-.btn-download:hover, .btn-pdf:hover {
-    transform: translateY(-2px);
+.overview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.stat-box {
+    background: white;
+    padding: 12px 8px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 11px;
+    color: #64748b;
+    text-transform: uppercase;
+}
+
+.stat-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-top: 2px;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.card h3 {
+    font-size: 15px;
+    color: #1e293b;
+    margin-bottom: 12px;
+}
+
+.insights-list {
+    list-style-type: none;
+}
+
+.insights-list li {
+    background: #f1f5f9;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: #334155;
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 280px;
+    width: 100%;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+th, td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+th {
+    background-color: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+}
+
+.hidden {
+    display: none !important;
 }
