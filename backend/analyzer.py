@@ -1,71 +1,79 @@
 import pandas as pd
-import numpy as np
 import io
 
-def analyze_dataset(file_bytes: bytes, filename: str) -> dict:
-    # Read CSV or Excel
+def analyze_dataset(file_contents: bytes, filename: str):
+    # Load File into DataFrame
     if filename.endswith('.csv'):
-        df = pd.read_csv(io.BytesIO(file_bytes))
-    elif filename.endswith(('.xls', '.xlsx')):
-        df = pd.read_excel(io.BytesIO(file_bytes))
+        df = pd.read_csv(io.BytesIO(file_contents))
     else:
-        raise ValueError("Unsupported file format. Please upload CSV or Excel.")
+        df = pd.read_excel(io.BytesIO(file_contents))
 
-    df = df.replace([np.inf, -np.inf], np.nan)
-
+    # Basic Info
     total_rows, total_cols = df.shape
-    columns_info = list(df.columns)
+    columns = list(df.columns)
+    
+    # Identify Text/Categorical Column for X-Axis Labels
+    text_cols = df.select_dtypes(include=['object', 'string']).columns.tolist()
+    label_col = text_cols[0] if text_cols else None
+    
+    if label_col:
+        labels = df[label_col].astype(str).tolist()
+    else:
+        labels = [f"Row {i+1}" for i in range(total_rows)]
 
-    preview = df.head(5).fillna("").to_dict(orient="records")
-    missing_summary = df.isnull().sum().to_dict()
+    # Identify Numeric Columns for Metrics
+    numeric_df = df.select_dtypes(include=['number'])
+    numeric_cols = numeric_df.columns.tolist()
 
-    numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+    # Calculate Statistics
     stats = {}
-    outliers = {}
+    chart_datasets = []
+    insights = []
 
-    for col in numeric_cols:
-        col_data = df[col].dropna()
-        if col_data.empty:
-            continue
+    # Palette for chart colors
+    colors = [
+        'rgba(75, 192, 192, 0.7)',
+        'rgba(54, 162, 235, 0.7)',
+        'rgba(255, 99, 132, 0.7)',
+        'rgba(255, 206, 86, 0.7)',
+        'rgba(153, 102, 255, 0.7)'
+    ]
 
-        mean_val = float(col_data.mean())
-        std_val = float(col_data.std()) if len(col_data) > 1 else 0.0
-        min_val = float(col_data.min())
-        max_val = float(col_data.max())
+    for idx, col in enumerate(numeric_cols):
+        col_sum = float(df[col].sum())
+        col_mean = float(df[col].mean())
+        col_max = float(df[col].max())
+        col_min = float(df[col].min())
 
         stats[col] = {
-            "mean": round(mean_val, 2),
-            "std": round(std_val, 2),
-            "min": round(min_val, 2),
-            "max": round(max_val, 2)
+            "Total": round(col_sum, 2),
+            "Average": round(col_mean, 2),
+            "Max": round(col_max, 2),
+            "Min": round(col_min, 2)
         }
 
-        # Outliers detection (IQR)
-        q1 = col_data.quantile(0.25)
-        q3 = col_data.quantile(0.75)
-        iqr = q3 - q1
-        lower_bound = q1 - (1.5 * iqr)
-        upper_bound = q3 + (1.5 * iqr)
+        chart_datasets.append({
+            "label": col,
+            "data": df[col].fillna(0).tolist(),
+            "backgroundColor": colors[idx % len(colors)]
+        })
 
-        outlier_count = int(((col_data < lower_bound) | (col_data > upper_bound)).sum())
-        outliers[col] = {
-            "outlier_count": outlier_count,
-            "lower_bound": round(float(lower_bound), 2),
-            "upper_bound": round(float(upper_bound), 2)
-        }
-
-    chart_data = {}
-    for col in numeric_cols[:3]:
-        chart_data[col] = df[col].fillna(0).tolist()[:20]
+        # Generate Quick Insights
+        if label_col:
+            max_item = df.loc[df[col].idxmax()][label_col]
+            min_item = df.loc[df[col].idxmin()][label_col]
+            insights.append(f"Highest {col} is <strong>{col_max}</strong> ({max_item}).")
+            insights.append(f"Lowest {col} is <strong>{col_min}</strong> ({min_item}).")
+        else:
+            insights.append(f"Highest {col} is <strong>{col_max}</strong>.")
 
     return {
         "filename": filename,
         "rows": total_rows,
-        "columns_count": total_cols,
-        "columns": columns_info,
-        "preview": preview,
-        "missing_values": missing_summary,
-        "numeric_stats": stats,
-        "outliers": outliers,
-        "chart_data": chart_data
+        "columns": total_cols,
+        "column_names": columns,
+        "labels": labels,
+        "stats": stats,
+        "chart_datasets": chart_datasets,
+        "insights": insights
     }
