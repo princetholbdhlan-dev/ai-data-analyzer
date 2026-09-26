@@ -1,40 +1,209 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f7f6;
+* {
+    box-sizing: border-box;
     margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    color: #333;
     padding: 20px;
-}
-.container {
-    max-width: 900px;
-    margin: 0 auto;
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-h1, h2 { color: #333; }
-.upload-box {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    justify-content: center;
 }
-input[type="file"] {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    flex-grow: 1;
+
+.app-container {
+    max-width: 900px;
+    width: 100%;
 }
-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
+
+.app-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.app-header .logo {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1e293b;
+}
+
+.app-header .logo span {
+    color: #2563eb;
+}
+
+.app-header p {
+    color: #64748b;
+    margin-top: 6px;
+    font-size: 14px;
+}
+
+.upload-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.file-drop-area {
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    padding: 30px 15px;
+    cursor: pointer;
+    position: relative;
+    background: #f8fafc;
+    transition: all 0.3s ease;
+}
+
+.file-drop-area:hover {
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+
+.file-drop-area input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
     cursor: pointer;
 }
-button:hover { background-color: #0056b3; }
-#loading {
-    font-weight: bold;
-    color: #007bff;
+
+.upload-icon {
+    font-size: 36px;
+    margin-bottom: 8px;
+}
+
+.upload-text {
+    font-weight: 600;
+    color: #334155;
+}
+
+.file-name {
+    display: block;
+    font-size: 12px;
+    color: #2563eb;
+    margin-top: 6px;
+    font-weight: 500;
+}
+
+#analyzeBtn {
     margin-top: 15px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+#analyzeBtn:hover {
+    background-color: #1d4ed8;
+}
+
+.loader {
+    margin-top: 15px;
+    color: #2563eb;
+    font-weight: 600;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Results */
+.overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-box {
+    background: white;
+    padding: 18px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 12px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-top: 4px;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.card h3 {
+    font-size: 16px;
+    color: #1e293b;
+    margin-bottom: 15px;
+}
+
+.insights-list {
+    list-style-type: none;
+}
+
+.insights-list li {
+    background: #f1f5f9;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #334155;
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 320px;
+    width: 100%;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+    background-color: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+}
+
+tr:hover {
+    background-color: #f8fafc;
 }
