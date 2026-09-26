@@ -11,27 +11,40 @@ def analyze_dataset(file_contents: bytes, filename: str):
     # Data Cleaning Metrics
     initial_rows = len(df)
     
-    # 1. Strip Whitespaces from strings
+    # 1. Strip Whitespaces
     df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
     
     # 2. Remove Duplicate Rows
     df_cleaned = df.drop_duplicates()
     duplicates_removed = initial_rows - len(df_cleaned)
 
-    # 3. Fill Missing Numeric Values with Median/0
+    # 3. Fill Missing Numeric Values
     numeric_df = df_cleaned.select_dtypes(include=['number'])
     df_cleaned[numeric_df.columns] = numeric_df.fillna(0)
 
-    # Basic Info Post-Cleaning
     total_rows, total_cols = df_cleaned.shape
     columns = list(df_cleaned.columns)
 
-    # Identify Text Column for X-Axis
+    # Identify Text/ID Column
     text_cols = df_cleaned.select_dtypes(include=['object', 'string']).columns.tolist()
     label_col = text_cols[0] if text_cols else None
-    
-    labels = df_cleaned[label_col].astype(str).tolist() if label_col else [f"Row {i+1}" for i in range(total_rows)]
     numeric_cols = df_cleaned.select_dtypes(include=['number']).columns.tolist()
+
+    # --- CHART SPECIFIC LOGIC FOR LARGE DATASETS ---
+    # Agar data 15 rows se bda hai, toh Chart ke liye Top 10 limit kar do
+    if total_rows > 15:
+        # Sort by primary numeric column (e.g., Revenue or Sales if present)
+        sort_col = numeric_cols[0] if numeric_cols else None
+        if sort_col:
+            chart_df = df_cleaned.sort_values(by=sort_col, ascending=False).head(10)
+        else:
+            chart_df = df_cleaned.head(10)
+        chart_title_suffix = " (Top 10 Records)"
+    else:
+        chart_df = df_cleaned
+        chart_title_suffix = ""
+
+    labels = chart_df[label_col].astype(str).tolist() if label_col else [f"Row {i+1}" for i in range(len(chart_df))]
 
     stats = {}
     chart_datasets = []
@@ -41,10 +54,12 @@ def analyze_dataset(file_contents: bytes, filename: str):
         'rgba(75, 192, 192, 0.8)',
         'rgba(54, 162, 235, 0.8)',
         'rgba(255, 99, 132, 0.8)',
-        'rgba(255, 206, 86, 0.8)'
+        'rgba(255, 206, 86, 0.8)',
+        'rgba(153, 102, 255, 0.8)'
     ]
 
     for idx, col in enumerate(numeric_cols):
+        # Stats are calculated on FULL CLEANED DATASET
         col_sum = float(df_cleaned[col].sum())
         col_mean = float(df_cleaned[col].mean())
         col_max = float(df_cleaned[col].max())
@@ -57,9 +72,10 @@ def analyze_dataset(file_contents: bytes, filename: str):
             "Min": round(col_min, 2)
         }
 
+        # Chart datasets use the sampled/top 10 data
         chart_datasets.append({
             "label": col,
-            "data": df_cleaned[col].tolist(),
+            "data": chart_df[col].tolist(),
             "backgroundColor": colors[idx % len(colors)]
         })
 
@@ -71,7 +87,6 @@ def analyze_dataset(file_contents: bytes, filename: str):
         else:
             insights.append(f"Highest <strong>{col}</strong> is <strong>{col_max}</strong>.")
 
-    # Convert Cleaned Data to CSV String for Download
     cleaned_csv = df_cleaned.to_csv(index=False)
 
     return {
@@ -81,6 +96,7 @@ def analyze_dataset(file_contents: bytes, filename: str):
         "duplicates_removed": duplicates_removed,
         "column_names": columns,
         "labels": labels,
+        "chart_title_suffix": chart_title_suffix,
         "stats": stats,
         "chart_datasets": chart_datasets,
         "insights": insights,
