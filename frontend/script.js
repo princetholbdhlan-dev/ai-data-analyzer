@@ -20,3 +20,47 @@
             </div>
         </div>
     `;
+async function sendChatQuery() {
+    const inputEl = document.getElementById('chatInput');
+    const question = inputEl ? inputEl.value.trim() : '';
+    if (!question || !rawApiData) return;
+
+    const chatHistory = document.getElementById('chatHistory');
+    if (!chatHistory) return;
+    
+    // Append User Question
+    chatHistory.innerHTML += `
+        <div style="background: #ffffff; padding: 10px; border-radius: 6px; font-size: 13px; margin-bottom: 8px; border: 1px solid #e2e8f0; text-align: right;">
+            <strong>You:</strong> ${question}
+        </div>
+    `;
+    inputEl.value = '';
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+
+    try {
+        const response = await fetch("https://ai-data-analyzer-jjkj.onrender.com/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                question: question,
+                stats: rawApiData.stats,
+                insights: rawApiData.insights
+            })
+        });
+
+        const result = await response.json();
+        if (response.ok && result.success) {
+            chatHistory.innerHTML += `
+                <div style="background: #eff6ff; padding: 10px; border-radius: 6px; font-size: 13px; margin-bottom: 8px;">
+                    ${result.answer}
+                </div>
+            `;
+        } else {
+            chatHistory.innerHTML += `<div style="color: red; font-size: 12px; margin-bottom: 8px;">Failed to get AI response.</div>`;
+        }
+    } catch (err) {
+        console.error(err);
+        chatHistory.innerHTML += `<div style="color: red; font-size: 12px; margin-bottom: 8px;">Error connecting to AI server.</div>`;
+    }
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+}
