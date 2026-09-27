@@ -3,87 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Data Analytics Studio</title>
+    <title>AnalytixAI — Enterprise Data Suite</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- PDF Generation Library -->
+    <!-- html2pdf.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="app-container">
-        <header class="app-header">
-            <div class="logo">⚡ <span>DataVision AI Studio</span></div>
-            <p>Automated Data Cleaning, Statistical Analytics & PDF Reporting</p>
-        </header>
 
-        <main class="main-content">
-            <section class="upload-card">
-                <div class="file-drop-area">
-                    <input type="file" id="fileInput" accept=".csv, .xlsx, .xls">
-                    <div class="upload-icon">📊</div>
-                    <p class="upload-text">Choose CSV or Excel dataset to analyze</p>
-                    <span class="file-name" id="fileNameDisplay">No file selected</span>
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="switchPage('home')">
+                <span class="logo-icon">📊</span>
+                <span class="logo-text">Analytix<span>AI</span></span>
+            </div>
+            <nav class="nav-links">
+                <a href="#" class="nav-link active" id="nav-home" onclick="switchPage('home')">Home</a>
+                <a href="#" class="nav-link" id="nav-cleaner" onclick="switchPage('cleaner')">🧹 Data Cleaner</a>
+                <a href="#" class="nav-link" id="nav-charts" onclick="switchPage('charts')">📈 Chart Studio</a>
+                <a href="#" class="nav-link" id="nav-reports" onclick="switchPage('reports')">📄 PDF Reports</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-content">
+
+        <!-- GLOBAL FILE UPLOADER (Available Across Tools) -->
+        <section id="globalUploader" class="upload-card">
+            <div class="file-drop-area">
+                <div class="upload-icon">📁</div>
+                <p class="upload-title">Choose CSV or Excel Dataset</p>
+                <p class="upload-sub">Upload once to use across all tools</p>
+                <input type="file" id="fileInput" accept=".csv, .xlsx, .xls">
+                <span class="file-name" id="fileNameDisplay">No file selected</span>
+            </div>
+            <button id="analyzeBtn" onclick="uploadAndAnalyze()">Analyze & Process Dataset</button>
+        </section>
+
+        <!-- Loader -->
+        <div id="loader" class="loader-container hidden">
+            <div class="spinner"></div>
+            <p>Processing data for all suite tools... Please wait.</p>
+        </div>
+
+        <!-- PAGE 1: HOME PAGE -->
+        <section id="page-home" class="page-view">
+            <div class="hero-section">
+                <span class="badge">🚀 All-in-One Data Analytics Platform</span>
+                <h1>Modular Tools for Modern Data Workflows</h1>
+                <p>Upload your dataset once, then seamlessly switch between Data Cleaning, Visual Chart Generation, and PDF Report Exports.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card" onclick="switchPage('cleaner')">
+                    <div class="feature-icon">🧹</div>
+                    <h3>Data Cleaning Tool</h3>
+                    <p>Automatically remove duplicate records, fill missing values, and download cleaned CSV files.</p>
+                    <span class="card-link">Open Cleaner &rarr;</span>
                 </div>
-                <button id="analyzeBtn" onclick="uploadAndAnalyze()">Analyze Dataset</button>
-                <div id="loader" class="loader hidden">Cleaning & Analyzing Data... Please wait.</div>
-            </section>
-
-            <div id="resultsContainer" class="results-container hidden">
-                <!-- Action Bar for Download Options -->
-                <div class="action-bar">
-                    <button class="btn-download" onclick="downloadCleanCSV()">📥 Export Cleaned Data</button>
-                    <button class="btn-pdf" onclick="exportPDFReport()">📄 Download PDF Report</button>
+                <div class="feature-card" onclick="switchPage('charts')">
+                    <div class="feature-icon">📈</div>
+                    <h3>Chart Studio</h3>
+                    <p>Generate bar charts with custom Top 10, Top 20, or Top 30 record filters for large datasets.</p>
+                    <span class="card-link">Open Studio &rarr;</span>
                 </div>
-
-                <div id="reportContent">
-                    <section class="overview-grid">
-                        <div class="stat-box">
-                            <span class="stat-label">File Analyzed</span>
-                            <span class="stat-value" id="resFilename">-</span>
-                        </div>
-                        <div class="stat-box">
-                            <span class="stat-label">Total Rows</span>
-                            <span class="stat-value" id="resRows">-</span>
-                        </div>
-                        <div class="stat-box">
-                            <span class="stat-label">Duplicates Cleaned</span>
-                            <span class="stat-value" id="resDuplicates">0</span>
-                        </div>
-                    </section>
-
-                    <section class="card">
-                        <h3>💡 Automated Key Insights</h3>
-                        <ul id="insightsList" class="insights-list"></ul>
-                    </section>
-
-                    <section class="card">
-                        <h3>📈 Visual Comparison Chart</h3>
-                        <div class="chart-wrapper">
-                            <canvas id="dataChart"></canvas>
-                        </div>
-                    </section>
-
-                    <section class="card">
-                        <h3>🔢 Statistical Summary Table</h3>
-                        <div class="table-responsive">
-                            <table id="statsTable">
-                                <thead>
-                                    <tr>
-                                        <th>Metric Column</th>
-                                        <th>Total (Sum)</th>
-                                        <th>Average</th>
-                                        <th>Max Value</th>
-                                        <th>Min Value</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                    </section>
+                <div class="feature-card" onclick="switchPage('reports')">
+                    <div class="feature-icon">📄</div>
+                    <h3>PDF Report Generator</h3>
+                    <p>Extract statistical metrics (Sum, Mean, Max, Min) and export executive PDF summaries.</p>
+                    <span class="card-link">Open Generator &rarr;</span>
                 </div>
             </div>
-        </main>
-    </div>
+        </section>
+
+        <!-- PAGE 2: DATA CLEANER TOOL -->
+        <section id="page-cleaner" class="page-view hidden">
+            <div class="page-header">
+                <h2>🧹 Automated Data Cleaner</h2>
+                <p>Clean raw datasets by eliminating duplicates and formatting empty values.</p>
+            </div>
+
+            <div id="cleanerContent" class="tool-content empty-state">
+                <p>Please upload a file using the upload bar above to see cleaning results.</p>
+            </div>
+        </section>
+
+        <!-- PAGE 3: CHART STUDIO -->
+        <section id="page-charts" class="page-view hidden">
+            <div class="page-header">
+                <h2>📈 Interactive Chart Studio</h2>
+                <p>Visualize numerical distributions with custom row filters.</p>
+            </div>
+
+            <div id="chartsContent" class="tool-content empty-state">
+                <p>Please upload a file using the upload bar above to generate charts.</p>
+            </div>
+        </section>
+
+        <!-- PAGE 4: PDF REPORTS TOOL -->
+        <section id="page-reports" class="page-view hidden">
+            <div class="page-header">
+                <h2>📄 Statistical Summary & PDF Reports</h2>
+                <p>Generate statistical analysis and export ready-to-share PDF documents.</p>
+            </div>
+
+            <div id="reportsContent" class="tool-content empty-state">
+                <p>Please upload a file using the upload bar above to view reports.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 AnalytixAI Enterprise Suite. Built for fast data intelligence.</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
