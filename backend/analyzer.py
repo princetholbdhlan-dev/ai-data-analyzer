@@ -1,104 +1,40 @@
-import pandas as pd
-import io
+def answer_dataset_question(question: str, stats: dict, insights: list) -> str:
+    q = question.lower().strip()
 
-def analyze_dataset(file_contents: bytes, filename: str):
-    # Load File
-    if filename.endswith('.csv'):
-        df = pd.read_csv(io.BytesIO(file_contents))
-    else:
-        df = pd.read_excel(io.BytesIO(file_contents))
+    # Match maximum or highest queries
+    if "highest" in q or "max" in q or "maximum" in q or "sabse zyada" in q:
+        for insight in insights:
+            if "highest" in insight.lower():
+                return f"🤖 **AI Analysis:** {insight}"
+        for col, s in stats.items():
+            if col.lower() in q:
+                return f"🤖 **AI Analysis:** The maximum value for **{col}** is **{s['Max']}**."
+        
+    # Match minimum or lowest queries
+    if "lowest" in q or "min" in q or "minimum" in q or "sabse kam" in q:
+        for insight in insights:
+            if "lowest" in insight.lower():
+                return f"🤖 **AI Analysis:** {insight}"
+        for col, s in stats.items():
+            if col.lower() in q:
+                return f"🤖 **AI Analysis:** The minimum value for **{col}** is **{s['Min']}**."
 
-    # Data Cleaning Metrics
-    initial_rows = len(df)
+    # Match average/mean queries
+    if "average" in q or "mean" in q or "avg" in q:
+        for col, s in stats.items():
+            if col.lower() in q:
+                return f"🤖 **AI Analysis:** The average **{col}** across the dataset is **{s['Average']}**."
+        return "🤖 **AI Analysis:** Here are the averages:\n" + "\n".join([f"- **{col}**: {s['Average']}" for col, s in stats.items()])
+
+    # Match total/sum queries
+    if "total" in q or "sum" in q or "overall" in q:
+        for col, s in stats.items():
+            if col.lower() in q:
+                return f"🤖 **AI Analysis:** The total **{col}** is **{s['Total']}**."
+        return "🤖 **AI Analysis:** Here are the totals:\n" + "\n".join([f"- **{col}**: {s['Total']}" for col, s in stats.items()])
+
+    # Default overview answer
+    if insights:
+        return f"🤖 **AI Analysis:** Based on your dataset summary:\n" + "\n".join([f"- {i}" for i in insights[:3]])
     
-    # 1. Strip Whitespaces
-    df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
-    
-    # 2. Remove Duplicate Rows
-    df_cleaned = df.drop_duplicates()
-    duplicates_removed = initial_rows - len(df_cleaned)
-
-    # 3. Fill Missing Numeric Values
-    numeric_df = df_cleaned.select_dtypes(include=['number'])
-    df_cleaned[numeric_df.columns] = numeric_df.fillna(0)
-
-    total_rows, total_cols = df_cleaned.shape
-    columns = list(df_cleaned.columns)
-
-    # Identify Text/ID Column
-    text_cols = df_cleaned.select_dtypes(include=['object', 'string']).columns.tolist()
-    label_col = text_cols[0] if text_cols else None
-    numeric_cols = df_cleaned.select_dtypes(include=['number']).columns.tolist()
-
-    # --- CHART SPECIFIC LOGIC FOR LARGE DATASETS ---
-    # Agar data 15 rows se bda hai, toh Chart ke liye Top 10 limit kar do
-    if total_rows > 15:
-        # Sort by primary numeric column (e.g., Revenue or Sales if present)
-        sort_col = numeric_cols[0] if numeric_cols else None
-        if sort_col:
-            chart_df = df_cleaned.sort_values(by=sort_col, ascending=False).head(10)
-        else:
-            chart_df = df_cleaned.head(10)
-        chart_title_suffix = " (Top 10 Records)"
-    else:
-        chart_df = df_cleaned
-        chart_title_suffix = ""
-
-    labels = chart_df[label_col].astype(str).tolist() if label_col else [f"Row {i+1}" for i in range(len(chart_df))]
-
-    stats = {}
-    chart_datasets = []
-    insights = []
-
-    colors = [
-        'rgba(75, 192, 192, 0.8)',
-        'rgba(54, 162, 235, 0.8)',
-        'rgba(255, 99, 132, 0.8)',
-        'rgba(255, 206, 86, 0.8)',
-        'rgba(153, 102, 255, 0.8)'
-    ]
-
-    for idx, col in enumerate(numeric_cols):
-        # Stats are calculated on FULL CLEANED DATASET
-        col_sum = float(df_cleaned[col].sum())
-        col_mean = float(df_cleaned[col].mean())
-        col_max = float(df_cleaned[col].max())
-        col_min = float(df_cleaned[col].min())
-
-        stats[col] = {
-            "Total": round(col_sum, 2),
-            "Average": round(col_mean, 2),
-            "Max": round(col_max, 2),
-            "Min": round(col_min, 2)
-        }
-
-        # Chart datasets use the sampled/top 10 data
-        chart_datasets.append({
-            "label": col,
-            "data": chart_df[col].tolist(),
-            "backgroundColor": colors[idx % len(colors)]
-        })
-
-        if label_col:
-            max_item = df_cleaned.loc[df_cleaned[col].idxmax()][label_col]
-            min_item = df_cleaned.loc[df_cleaned[col].idxmin()][label_col]
-            insights.append(f"Highest <strong>{col}</strong> is <strong>{col_max}</strong> ({max_item}).")
-            insights.append(f"Lowest <strong>{col}</strong> is <strong>{col_min}</strong> ({min_item}).")
-        else:
-            insights.append(f"Highest <strong>{col}</strong> is <strong>{col_max}</strong>.")
-
-    cleaned_csv = df_cleaned.to_csv(index=False)
-
-    return {
-        "filename": filename,
-        "rows": total_rows,
-        "columns": total_cols,
-        "duplicates_removed": duplicates_removed,
-        "column_names": columns,
-        "labels": labels,
-        "chart_title_suffix": chart_title_suffix,
-        "stats": stats,
-        "chart_datasets": chart_datasets,
-        "insights": insights,
-        "cleaned_csv": cleaned_csv
-    }
+    return "🤖 **AI Analysis:** I could not find a specific match for your question. Try asking about the 'highest revenue', 'average sales', or 'total count'."
