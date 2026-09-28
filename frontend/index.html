@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnalytixAI — Enterprise Workspace</title>
+    <title>AnalytixAI — All-in-One Data Analyst SaaS Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -16,194 +16,259 @@
 </head>
 <body class="flex h-screen overflow-hidden selection:bg-purple-500 selection:text-white">
 
-    <!-- Left Sidebar Navigation -->
-    <aside id="sidebarNav" class="w-64 bg-[#0e101f] border-r border-slate-800/60 flex-col justify-between py-6 px-4 hidden md:flex">
-        <div>
-            <div class="flex items-center gap-3 px-3 mb-8 cursor-pointer" onclick="showSection('step-welcome')">
-                <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-400 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-purple-500/30">
-                    <i class="fa-solid fa-bolt"></i>
-                </div>
-                <span class="text-lg font-bold text-white tracking-wide">Analytix<span class="text-purple-400">AI</span></span>
-            </div>
-
-            <nav class="space-y-1" id="navTabs">
-                <button onclick="switchTab('overviewTab')" id="btn-overview" class="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-xs font-semibold active-nav transition-all text-left">
-                    <i class="fa-solid fa-border-all text-sm"></i> Overview & Upload
-                </button>
-                <button onclick="switchTab('cleanerTab')" id="btn-cleaner" class="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all text-left">
-                    <i class="fa-solid fa-wand-magic-sparkles text-sm"></i> Data Cleaner
-                </button>
-                <button onclick="switchTab('chartsTab')" id="btn-charts" class="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all text-left">
-                    <i class="fa-solid fa-chart-line text-sm"></i> Chart Studio
-                </button>
-                <button onclick="switchTab('assistantTab')" id="btn-assistant" class="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all text-left">
-                    <i class="fa-solid fa-robot text-sm"></i> AI Assistant
-                </button>
-                <button onclick="switchTab('reportsTab')" id="btn-reports" class="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all text-left">
-                    <i class="fa-solid fa-file-pdf text-sm"></i> PDF Reports
-                </button>
-            </nav>
-        </div>
-    </aside>
-
-    <!-- Main Content Area -->
-    <main class="flex-1 overflow-y-auto p-6 md:p-8 bg-gradient-to-br from-[#0b0d17] via-[#101226] to-[#0b0d17]">
-        
-        <!-- STEP 1: Welcome Banner -->
-        <div id="step-welcome" class="glass-card p-10 text-center max-w-3xl mx-auto my-12">
+    <!-- STEP 1: PUBLIC LANDING PAGE & WELCOME HERO -->
+    <div id="page-welcome" class="w-full h-full overflow-y-auto p-6 flex flex-col justify-center items-center">
+        <div class="glass-card p-10 text-center max-w-3xl mx-auto my-auto">
             <div class="inline-flex items-center gap-2 bg-purple-950/60 border border-purple-800/50 text-purple-400 text-xs font-medium px-4 py-1.5 rounded-full mb-6">
-                <i class="fa-solid fa-sparkles"></i> Enterprise Data Workspace
+                <i class="fa-solid fa-sparkles"></i> Next-Gen Data Analyst Operating System
             </div>
             <h1 class="text-3xl md:text-5xl font-black text-white leading-tight mb-4">
-                Turn Raw Data Into <span class="bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">Actionable Insights</span>
+                All-in-One AI Platform For <span class="bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">Data Analytics & Cloud Storage</span>
             </h1>
             <p class="text-slate-400 text-sm md:text-base mb-8 max-w-xl mx-auto">
-                Clean datasets, generate interactive charts, run AI analysis, and export executive PDF reports in one unified dashboard.
+                Clean datasets, run automated EDA, query datasets using AI, build interactive dashboards, and save all your projects in your cloud drive.
             </p>
-            <button onclick="showSection('step-login')" class="bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 text-white font-bold text-sm px-8 py-3.5 rounded-xl shadow-lg shadow-purple-500/25 transition-all">
-                Get Started Free →
-            </button>
+            <div class="flex justify-center gap-4">
+                <button onclick="switchScreen('page-auth')" class="bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 text-white font-bold text-sm px-8 py-3.5 rounded-xl shadow-lg shadow-purple-500/25 transition-all">
+                    Get Started Free →
+                </button>
+            </div>
         </div>
+    </div>
 
-        <!-- STEP 2: Login / Account Details -->
-        <div id="step-login" class="glass-card p-8 max-w-md mx-auto my-12 hidden">
-            <h2 class="text-xl font-bold text-white text-center mb-1">Create Account</h2>
-            <p class="text-xs text-slate-400 text-center mb-6">Enter your details to open the workspace</p>
+    <!-- STEP 2: USER AUTHENTICATION / REGISTRATION -->
+    <div id="page-auth" class="w-full h-full overflow-y-auto p-6 flex flex-col justify-center items-center hidden">
+        <div class="glass-card p-8 max-w-md w-full">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-white">Create Account / Sign In</h2>
+                <button onclick="switchScreen('page-welcome')" class="text-slate-500 hover:text-white text-xs"><i class="fa-solid fa-xmark text-base"></i></button>
+            </div>
+            <p class="text-xs text-slate-400 mb-6">Enter details to access your cloud workspace & multi-tool suite.</p>
             
-            <form onsubmit="handleLogin(event)" class="space-y-4">
+            <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
-                    <input type="text" id="userName" required placeholder="e.g. Prince Badlan" class="w-full bg-[#14172c] border border-slate-800 text-white text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500">
+                    <input type="text" id="authName" required placeholder="Prince Badlan" class="w-full bg-[#14172c] border border-slate-800 text-white text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
-                    <input type="email" id="userEmail" required placeholder="name@company.com" class="w-full bg-[#14172c] border border-slate-800 text-white text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500">
+                    <input type="email" id="authEmail" required placeholder="prince@example.com" class="w-full bg-[#14172c] border border-slate-800 text-white text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
+                    <input type="password" required placeholder="••••••••" class="w-full bg-[#14172c] border border-slate-800 text-white text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500">
                 </div>
                 <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-3.5 rounded-xl shadow-lg shadow-purple-600/30 transition-all mt-2">
-                    Enter Workspace →
+                    Enter SaaS Platform →
                 </button>
             </form>
         </div>
+    </div>
 
-        <!-- STEP 3: Main Dashboard Workspace -->
-        <div id="step-workspace" class="hidden">
-            
-            <!-- Top Header -->
-            <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-8">
-                <div>
-                    <h1 class="text-2xl font-bold text-white" id="headerTitle">Overview & Upload</h1>
-                    <p class="text-xs text-slate-500 mt-0.5">AnalytixAI Interactive Dashboard</p>
-                </div>
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-300 font-bold text-xs" id="userAvatar">
-                        PB
+    <!-- STEP 3: MAIN SAAS MULTI-TOOL PLATFORM ARCHITECTURE -->
+    <div id="page-platform" class="w-full h-full flex overflow-hidden hidden">
+        
+        <!-- Left Multi-Tool Sidebar -->
+        <aside class="w-64 bg-[#0e101f] border-r border-slate-800/60 flex flex-col justify-between py-6 px-4 shrink-0">
+            <div>
+                <div class="flex items-center gap-3 px-3 mb-8 cursor-pointer" onclick="switchScreen('page-welcome')">
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-400 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-purple-500/30">
+                        <i class="fa-solid fa-bolt"></i>
                     </div>
+                    <span class="text-lg font-bold text-white tracking-wide">Analytix<span class="text-purple-400">AI</span></span>
                 </div>
+
+                <div class="text-[10px] font-bold text-slate-500 px-3 mb-2 uppercase tracking-wider">Analyst Suite</div>
+                <nav class="space-y-1 mb-6">
+                    <button onclick="switchToolTab('tab-overview', this)" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold active-nav transition-all text-left">
+                        <i class="fa-solid fa-border-all text-sm w-4"></i> Overview
+                    </button>
+                    <button onclick="switchToolTab('tab-cleaner', this)" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all text-left">
+                        <i class="fa-solid fa-wand-magic-sparkles text-sm w-4"></i> Data Cleaner
+                    </button>
+                    <button onclick="switchToolTab('tab-charts', this)" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all text-left">
+                        <i class="fa-solid fa-chart-pie text-sm w-4"></i> Chart Studio
+                    </button>
+                    <button onclick="switchToolTab('tab-sql', this)" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all text-left">
+                        <i class="fa-solid fa-terminal text-sm w-4"></i> AI SQL & Query
+                    </button>
+                </nav>
+
+                <div class="text-[10px] font-bold text-slate-500 px-3 mb-2 uppercase tracking-wider">User Cloud</div>
+                <nav class="space-y-1">
+                    <button onclick="switchToolTab('tab-storage', this)" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all text-left">
+                        <i class="fa-solid fa-database text-sm w-4"></i> Saved Datasets
+                    </button>
+                    <button onclick="switchToolTab('tab-account', this)" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all text-left">
+                        <i class="fa-solid fa-user-gear text-sm w-4"></i> Account & Plan
+                    </button>
+                </nav>
             </div>
 
-            <!-- TAB 1: OVERVIEW & FILE UPLOADER -->
-            <div id="overviewTab" class="tab-content space-y-6">
-                <!-- File Upload Card -->
+            <!-- Profile Badge -->
+            <div class="glass-card p-3 flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-purple-600/30 border border-purple-500/40 flex items-center justify-center text-purple-300 font-bold text-xs" id="userInitial">
+                    PB
+                </div>
+                <div class="overflow-hidden">
+                    <p class="text-xs font-bold text-white truncate" id="displayName">Prince Badlan</p>
+                    <p class="text-[10px] text-emerald-400 font-semibold">Pro Plan Active</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace Viewport -->
+        <main class="flex-1 overflow-y-auto p-6 md:p-8 bg-gradient-to-br from-[#0b0d17] via-[#101226] to-[#0b0d17]">
+            
+            <!-- TOOL 1: OVERVIEW & NEW FILE UPLOAD -->
+            <section id="tab-overview" class="tool-content space-y-6">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">Overview Workspace</h1>
+                    <p class="text-xs text-slate-500 mt-1">Upload new datasets or access recent projects</p>
+                </div>
+
                 <div class="glass-card p-8 text-center border-dashed border-2 border-purple-500/30 hover:border-purple-500/60 transition-all">
                     <i class="fa-solid fa-cloud-arrow-up text-3xl text-purple-400 mb-3"></i>
-                    <h3 class="text-base font-bold text-white mb-1">Choose CSV or Excel Dataset</h3>
-                    <p class="text-xs text-slate-400 mb-4">Upload once to unlock all AI tools across the suite</p>
-                    <input type="file" id="fileInput" accept=".csv, .xlsx, .xls" class="hidden" onchange="displayFileName()">
+                    <h3 class="text-base font-bold text-white mb-1">Upload Dataset to Cloud Space</h3>
+                    <p class="text-xs text-slate-400 mb-4">Supports CSV, XLSX up to 50MB</p>
+                    <input type="file" id="fileInput" accept=".csv, .xlsx, .xls" class="hidden" onchange="document.getElementById('fileStatus').innerText = this.files[0].name">
                     <label for="fileInput" class="cursor-pointer bg-slate-800 hover:bg-slate-700 text-xs font-semibold px-4 py-2.5 rounded-xl text-slate-200 inline-block mb-3 border border-slate-700">
-                        Browse File
+                        Choose File
                     </label>
-                    <div id="fileNameDisplay" class="text-xs text-purple-400 font-mono mb-4">No file selected</div>
-                    <button id="analyzeBtn" onclick="uploadAndAnalyze()" class="bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-lg shadow-purple-500/20">
-                        Process Dataset
+                    <div id="fileStatus" class="text-xs text-purple-400 font-mono mb-4">No file selected</div>
+                    <button class="bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-lg shadow-purple-500/20">
+                        Upload & Open Tools
                     </button>
                 </div>
+            </section>
 
-                <!-- 4 Top Metric Cards (NexaCore Look) -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                    <div class="glass-card p-5">
-                        <p class="text-xs font-medium text-slate-400">Total Rows</p>
-                        <h2 class="text-2xl font-black text-white mt-1" id="metricRows">0</h2>
+            <!-- TOOL 2: DATA CLEANER -->
+            <section id="tab-cleaner" class="tool-content space-y-6 hidden">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">🧹 Smart Data Cleaner</h1>
+                    <p class="text-xs text-slate-500 mt-1">Automated data pre-processing and quality transformation</p>
+                </div>
+                <div class="glass-card p-6">
+                    <p class="text-xs text-slate-300">Clean nulls, drop duplicates, fix column headers, and re-export cleaned CSV files.</p>
+                </div>
+            </section>
+
+            <!-- TOOL 3: CHART STUDIO -->
+            <section id="tab-charts" class="tool-content space-y-6 hidden">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">📈 Interactive Chart Studio</h1>
+                    <p class="text-xs text-slate-500 mt-1">Generate bar, line, pie, and scatter plots</p>
+                </div>
+                <div class="glass-card p-6 h-80 flex items-center justify-center">
+                    <p class="text-xs text-slate-500">Select columns to plot charts</p>
+                </div>
+            </section>
+
+            <!-- TOOL 4: AI SQL & QUERY ASSISTANT -->
+            <section id="tab-sql" class="tool-content space-y-6 hidden">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">🤖 AI SQL & Pandas Query Assistant</h1>
+                    <p class="text-xs text-slate-500 mt-1">Ask questions in plain text to get SQL queries and code</p>
+                </div>
+                <div class="glass-card p-6">
+                    <textarea placeholder="e.g. Write a SQL query to get top 5 sales regions by profit..." class="w-full bg-[#14172c] border border-slate-800 text-white text-xs rounded-xl p-4 h-28 focus:outline-none focus:border-purple-500"></textarea>
+                    <button class="bg-purple-600 text-white text-xs font-bold px-5 py-2.5 rounded-xl mt-3">Generate Query</button>
+                </div>
+            </section>
+
+            <!-- TOOL 5: USER CLOUD DRIVE (SAVED DATASETS) -->
+            <section id="tab-storage" class="tool-content space-y-6 hidden">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="text-2xl font-bold text-white">📁 Saved Datasets & Cloud Storage</h1>
+                        <p class="text-xs text-slate-500 mt-1">Your saved files and historical analysis reports</p>
                     </div>
-                    <div class="glass-card p-5">
-                        <p class="text-xs font-medium text-slate-400">Total Columns</p>
-                        <h2 class="text-2xl font-black text-white mt-1" id="metricCols">0</h2>
-                    </div>
-                    <div class="glass-card p-5">
-                        <p class="text-xs font-medium text-slate-400">Missing Values</p>
-                        <h2 class="text-2xl font-black text-white mt-1" id="metricMissing">0</h2>
-                    </div>
-                    <div class="glass-card p-5">
-                        <p class="text-xs font-medium text-slate-400">Data Status</p>
-                        <h2 class="text-2xl font-black text-emerald-400 mt-1">Ready</h2>
+                    <button class="bg-purple-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl"><i class="fa-solid fa-plus mr-1"></i> Save Current Dataset</button>
+                </div>
+
+                <div class="glass-card p-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="text-slate-500 border-b border-slate-800">
+                                    <th class="pb-3 font-semibold">File Name</th>
+                                    <th class="pb-3 font-semibold">Size</th>
+                                    <th class="pb-3 font-semibold">Date Saved</th>
+                                    <th class="pb-3 font-semibold">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/50 text-slate-300">
+                                <tr>
+                                    <td class="py-3.5 font-medium text-white flex items-center gap-2">
+                                        <i class="fa-solid fa-file-csv text-emerald-400 text-base"></i> Q3_Sales_Report.csv
+                                    </td>
+                                    <td class="py-3.5 text-slate-400">2.4 MB</td>
+                                    <td class="py-3.5 text-slate-400">Sep 28, 2026</td>
+                                    <td class="py-3.5">
+                                        <button class="text-purple-400 hover:text-purple-300 font-bold mr-3">Load</button>
+                                        <button class="text-rose-400 hover:text-rose-300 font-bold">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3.5 font-medium text-white flex items-center gap-2">
+                                        <i class="fa-solid fa-file-excel text-cyan-400 text-base"></i> Customer_Churn_Data.xlsx
+                                    </td>
+                                    <td class="py-3.5 text-slate-400">5.1 MB</td>
+                                    <td class="py-3.5 text-slate-400">Sep 25, 2026</td>
+                                    <td class="py-3.5">
+                                        <button class="text-purple-400 hover:text-purple-300 font-bold mr-3">Load</button>
+                                        <button class="text-rose-400 hover:text-rose-300 font-bold">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- TAB 2: DATA CLEANER -->
-            <div id="cleanerTab" class="tab-content glass-card p-6 hidden">
-                <h3 class="text-sm font-bold text-white mb-4"><i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i> Data Cleaning Operations</h3>
-                <p class="text-xs text-slate-400 mb-6">Automatically remove duplicates, fill missing values, or format datasets.</p>
-                <div class="flex gap-4">
-                    <button class="bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold px-4 py-2.5 rounded-xl">Remove Duplicates</button>
-                    <button class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold px-4 py-2.5 rounded-xl border border-slate-700">Fill Nulls</button>
+            <!-- TOOL 6: ACCOUNT SETTINGS -->
+            <section id="tab-account" class="tool-content space-y-6 hidden">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">👤 Account & Subscription</h1>
+                    <p class="text-xs text-slate-500 mt-1">Manage profile and storage limits</p>
                 </div>
-            </div>
-
-            <!-- TAB 3: CHART STUDIO -->
-            <div id="chartsTab" class="tab-content glass-card p-6 hidden">
-                <h3 class="text-sm font-bold text-white mb-4"><i class="fa-solid fa-chart-line text-cyan-400"></i> Interactive Visualizations</h3>
-                <div class="h-64">
-                    <canvas id="mainChart"></canvas>
+                <div class="glass-card p-6 max-w-lg space-y-4">
+                    <p class="text-xs text-slate-300">Storage Used: <span class="text-white font-bold">7.5 MB / 500 MB</span></p>
+                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                        <div class="bg-purple-500 h-full w-[15%]"></div>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- TAB 4: AI ASSISTANT -->
-            <div id="assistantTab" class="tab-content glass-card p-6 hidden">
-                <h3 class="text-sm font-bold text-white mb-4"><i class="fa-solid fa-robot text-purple-400"></i> Ask Dataset AI</h3>
-                <div class="space-y-3">
-                    <input type="text" placeholder="Ask anything about your dataset..." class="w-full bg-[#14172c] border border-slate-800 text-white text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500">
-                    <button class="bg-purple-600 text-white text-xs font-bold px-5 py-2.5 rounded-xl">Ask AI</button>
-                </div>
-            </div>
-
-            <!-- TAB 5: PDF REPORTS -->
-            <div id="reportsTab" class="tab-content glass-card p-6 hidden">
-                <h3 class="text-sm font-bold text-white mb-4"><i class="fa-solid fa-file-pdf text-rose-400"></i> Executive PDF Export</h3>
-                <button class="bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold px-5 py-2.5 rounded-xl">Download PDF Report</button>
-            </div>
-
-        </div>
-
-    </main>
-
-    <script src="script.js"></script>
+        </main>
+    </div>
 
     <script>
-        function showSection(id) {
-            document.getElementById('step-welcome').classList.add('hidden');
-            document.getElementById('step-login').classList.add('hidden');
-            document.getElementById('step-workspace').classList.add('hidden');
-            document.getElementById(id).classList.remove('hidden');
+        function switchScreen(screenId) {
+            document.getElementById('page-welcome').classList.add('hidden');
+            document.getElementById('page-auth').classList.add('hidden');
+            document.getElementById('page-platform').classList.add('hidden');
+            document.getElementById(screenId).classList.remove('hidden');
         }
 
-        function handleLogin(event) {
+        function handleAuthSubmit(event) {
             event.preventDefault();
-            const name = document.getElementById('userName').value;
-            document.getElementById('userAvatar').innerText = name.substring(0, 2).toUpperCase();
-            document.getElementById('sidebarNav').classList.remove('hidden');
-            showSection('step-workspace');
+            const name = document.getElementById('authName').value;
+            document.getElementById('displayName').innerText = name;
+            document.getElementById('userInitial').innerText = name.substring(0, 2).toUpperCase();
+            switchScreen('page-platform');
         }
 
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+        function switchToolTab(tabId, btnElement) {
+            document.querySelectorAll('.tool-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(el => {
+                el.classList.remove('active-nav');
+                el.classList.add('text-slate-400');
+            });
+
             document.getElementById(tabId).classList.remove('hidden');
-        }
-
-        function displayFileName() {
-            const input = document.getElementById('fileInput');
-            if (input.files.length > 0) {
-                document.getElementById('fileNameDisplay').innerText = input.files[0].name;
-            }
+            btnElement.classList.add('active-nav');
+            btnElement.classList.remove('text-slate-400');
         }
     </script>
 </body>
