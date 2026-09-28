@@ -1,3 +1,5 @@
+const API_URL = 'https://ai-data-analyzer-jjkj.onrender.com/api/auth';
+const DATA_API_URL = 'https://ai-data-analyzer-jjkj.onrender.com/api/data';
 // Mobile Navigation Toggle
 function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
