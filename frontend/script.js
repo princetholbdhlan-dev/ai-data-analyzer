@@ -1,3 +1,4 @@
+// Base Backend URLs (Ending with trailing slashes to avoid 307 redirects)
 const API_URL = 'https://ai-data-analyzer-jjkj.onrender.com/api/auth';
 const DATA_API_URL = 'https://ai-data-analyzer-jjkj.onrender.com/api/data';
 
@@ -23,16 +24,19 @@ async function handleSignup(event) {
     const btn = document.getElementById('signupBtn');
 
     if (!fullName || !email || !password) {
-        alert("Please fill all details.");
+        alert("Please fill in all details.");
         return;
     }
 
-    if (btn) btn.innerText = "Connecting to Server...";
+    if (btn) btn.innerText = "Processing...";
 
     try {
-        const response = await fetch(`${API_URL}/signup`, {
+        const response = await fetch(`${API_URL}/signup/`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
             body: JSON.stringify({ fullName, email, password })
         });
 
@@ -47,12 +51,28 @@ async function handleSignup(event) {
             if (otpCard) otpCard.classList.remove('hidden');
             
             const badge = document.getElementById('demoOtpBadge');
-            if (badge) badge.innerText = `Demo Verification Code: ${data.otpDemo}`;
+            if (badge) badge.innerText = `Demo OTP: ${data.otpDemo}`;
         } else {
             alert(data.detail || "Signup failed. Account may already exist.");
         }
     } catch (err) {
-        alert("Backend starting up... Please wait 10 seconds and click Create Account again.");
+        // Fallback retry without trailing slash in case backend route doesn't have it
+        try {
+            const fallbackResponse = await fetch(`${API_URL}/signup`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fullName, email, password })
+            });
+            const fallbackData = await fallbackResponse.json();
+            if (fallbackResponse.ok && fallbackData.success) {
+                registeredEmail = email;
+                document.getElementById('signupCard')?.classList.add('hidden');
+                document.getElementById('otpCard')?.classList.remove('hidden');
+                document.getElementById('demoOtpBadge').innerText = `Demo OTP: ${fallbackData.otpDemo}`;
+                return;
+            }
+        } catch(fErr) {}
+        alert("Backend server is unreachable or sleeping. Please check your internet connection or try again in a moment.");
     } finally {
         if (btn) btn.innerText = "Create Account";
     }
@@ -70,7 +90,7 @@ async function handleOtpSubmit(event) {
     }
 
     try {
-        const response = await fetch(`${API_URL}/verify-email`, {
+        const response = await fetch(`${API_URL}/verify-email/`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: registeredEmail, otp })
@@ -85,7 +105,7 @@ async function handleOtpSubmit(event) {
             alert(data.detail || "Invalid OTP Code.");
         }
     } catch (err) {
-        alert("Error verifying code.");
+        alert("Error verifying OTP code.");
     }
 }
 
@@ -102,7 +122,7 @@ async function handleLogin(event) {
     }
 
     try {
-        const response = await fetch(`${API_URL}/login`, {
+        const response = await fetch(`${API_URL}/login/`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -119,7 +139,23 @@ async function handleLogin(event) {
             alert(data.detail || "Invalid Email or Password. Account does not exist!");
         }
     } catch (err) {
-        alert("Server Error. Make sure backend is active.");
+        // Fallback retry
+        try {
+            const fbRes = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const fbData = await fbRes.json();
+            if (fbRes.ok && fbData.success) {
+                localStorage.setItem('user_token', fbData.token);
+                localStorage.setItem('user_data', JSON.stringify(fbData.user));
+                alert("Login Successful!");
+                window.location.href = 'dashboard.html';
+                return;
+            }
+        } catch(e) {}
+        alert("Server Error. Unable to authenticate.");
     }
 }
 
