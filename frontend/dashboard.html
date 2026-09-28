@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnalytixAI — Workspace Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #080a12; color: #94a3b8; font-family: system-ui, -apple-system, sans-serif; }
+        .glass-card { background: rgba(15, 18, 35, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); border-radius: 16px; }
+        .btn-primary { background: linear-gradient(135deg, #9333ea 0%, #0891b2 100%); }
+    </style>
+</head>
+<body class="bg-[#080a12] text-slate-400 min-h-screen flex">
+
+    <!-- Sidebar Nav -->
+    <aside class="w-64 border-r border-slate-800/80 p-6 flex flex-col justify-between hidden md:flex">
+        <div class="space-y-8">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-400 flex items-center justify-center text-white font-black text-sm">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <span class="text-lg font-extrabold text-white">Analytix<span class="text-purple-400">AI</span></span>
+            </a>
+
+            <nav class="space-y-2 text-xs font-semibold">
+                <a href="#" class="flex items-center gap-3 text-white bg-purple-600/20 px-4 py-3 rounded-xl border border-purple-500/30">
+                    <i class="fa-solid fa-house text-purple-400"></i> Dashboard
+                </a>
+                <a href="#" class="flex items-center gap-3 text-slate-400 hover:text-white px-4 py-3 rounded-xl hover:bg-slate-900 transition-colors">
+                    <i class="fa-solid fa-upload"></i> Upload Dataset
+                </a>
+                <a href="#" class="flex items-center gap-3 text-slate-400 hover:text-white px-4 py-3 rounded-xl hover:bg-slate-900 transition-colors">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Data Cleaner
+                </a>
+                <a href="#" class="flex items-center gap-3 text-slate-400 hover:text-white px-4 py-3 rounded-xl hover:bg-slate-900 transition-colors">
+                    <i class="fa-solid fa-chart-pie"></i> Visualizer
+                </a>
+            </nav>
+        </div>
+
+        <div class="pt-6 border-t border-slate-800/80">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-bold text-white">Logged In User</p>
+                    <p class="text-[11px] text-slate-500">Pro Analyst Plan</p>
+                </div>
+                <a href="login.html" class="text-xs text-rose-400 hover:text-rose-300" title="Logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="flex-1 p-8 overflow-y-auto">
+        <header class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-2xl font-bold text-white">Data Analyst Workspace</h1>
+                <p class="text-xs text-slate-400 mt-1">Phase 4 me is dashboard ke andar real-time Data Analyst tools integrate honge.</p>
+            </div>
+            <a href="index.html" class="bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl border border-slate-700">
+                ← Back to Home
+            </a>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="glass-card p-6">
+                <p class="text-xs text-slate-400">Total Uploaded Files</p>
+                <h3 class="text-2xl font-bold text-white mt-2">0 Datasets</h3>
+            </div>
+            <div class="glass-card p-6">
+                <p class="text-xs text-slate-400">Cleaned Rows</p>
+                <h3 class="text-2xl font-bold text-emerald-400 mt-2">0</h3>
+            </div>
+            <div class="glass-card p-6">
+                <p class="text-xs text-slate-400">Generated Reports</p>
+                <h3 class="text-2xl font-bold text-cyan-400 mt-2">0</h3>
+            </div>
+        </div>
+
+        <!-- Placeholder for Drag & Drop Upload Engine -->
+        <div class="glass-card p-12 text-center border-2 border-dashed border-slate-800">
+            <i class="fa-solid fa-cloud-arrow-up text-4xl text-purple-400 mb-4"></i>
+            <h3 class="text-lg font-bold text-white mb-1">Dataset Upload Engine Ready</h3>
+            <p class="text-xs text-slate-400 max-w-sm mx-auto mb-6">Phase 4 me yahan real CSV/Excel upload, cleaning algorithms, and visual charts start honge.</p>
+            <button class="btn-primary text-white text-xs font-bold px-6 py-3 rounded-xl shadow-lg shadow-purple-600/30">
+                Upload Sample CSV →
+            </button>
+        </div>
+    </main>
+
+</body>
+</html>
