@@ -11,8 +11,8 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-4">
 
-    <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
-        <!-- Logo -->
+    <!-- SIGNUP CARD -->
+    <div id="signupCard" class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
         <div class="flex items-center justify-center gap-3 mb-6">
             <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center font-bold text-white text-xl shadow-lg shadow-indigo-500/30">
                 A
@@ -23,8 +23,7 @@
         <h2 class="text-xl font-semibold text-center text-white mb-2">Create Account</h2>
         <p class="text-xs text-slate-400 text-center mb-6">Get started with AI-driven automated data analytics.</p>
 
-        <!-- Signup Form -->
-        <form onsubmit="handleSignup(event)" class="space-y-4">
+        <form id="signupForm" onsubmit="handleSignup(event)" class="space-y-4">
             <div>
                 <label class="block text-xs font-medium text-slate-400 mb-1">Full Name</label>
                 <input type="text" id="signupName" required placeholder="John Doe" class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-indigo-500 transition">
@@ -40,8 +39,8 @@
                 <input type="password" id="signupPassword" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-indigo-500 transition">
             </div>
 
-            <button type="submit" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold shadow-lg shadow-indigo-600/30 transition">
-                Create Account & Send Verification
+            <button type="submit" id="signupBtn" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
+                <span>Create Account</span>
             </button>
         </form>
 
@@ -49,6 +48,29 @@
             Already have an account? 
             <a href="login.html" class="text-indigo-400 hover:text-indigo-300 font-medium">Log In</a>
         </p>
+    </div>
+
+    <!-- OTP VERIFICATION CARD (Hidden by default) -->
+    <div id="otpCard" class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl hidden">
+        <div class="text-center mb-6">
+            <div class="w-12 h-12 rounded-full bg-indigo-600/10 text-indigo-400 flex items-center justify-center mx-auto mb-3 text-xl">
+                <i class="fa-solid fa-envelope-circle-check"></i>
+            </div>
+            <h2 class="text-xl font-semibold text-white mb-1">Verify Your Email</h2>
+            <p class="text-xs text-slate-400">Enter the verification OTP code sent to your email.</p>
+            <p id="demoOtpBadge" class="text-xs font-mono text-emerald-400 mt-2 bg-emerald-500/10 py-1.5 px-3 rounded-lg border border-emerald-500/20 inline-block"></p>
+        </div>
+
+        <form onsubmit="handleOtpSubmit(event)" class="space-y-4">
+            <div>
+                <label class="block text-xs font-medium text-slate-400 mb-1">6-Digit OTP Code</label>
+                <input type="text" id="otpInput" required maxlength="6" placeholder="123456" class="w-full text-center tracking-widest font-mono text-lg px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-indigo-500 transition">
+            </div>
+
+            <button type="submit" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold shadow-lg shadow-indigo-600/30 transition">
+                Verify & Continue
+            </button>
+        </form>
     </div>
 
     <script src="script.js"></script>
