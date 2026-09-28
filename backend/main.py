@@ -2,7 +2,7 @@ import pandas as pd
 import io
 import random
 from datetime import datetime, timedelta
-from fastapi import FastAPI, HTTPException, Status, File, UploadFile
+from fastapi import FastAPI, HTTPException, status, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 from passlib.context import CryptContext
