@@ -129,3 +129,98 @@ async function handleVerifyOTP(event) {
         window.location.href = 'login.html';
     }
 }
+// ==========================================
+// PHASE 4: DATA ANALYZER & FILE UPLOAD ENGINE
+// ==========================================
+
+const DATA_API_URL = 'http://127.0.0.1:8000/api/data';
+
+// File Input Trigger
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+
+if (dropZone && fileInput) {
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            uploadDatasetFile(e.target.files[0]);
+        }
+    });
+}
+
+// Upload & Process File
+async function uploadDatasetFile(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        const response = await fetch(`${DATA_API_URL}/upload`, {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+        if (response.ok && data.success) {
+            renderDataSummary(data.summary);
+        } else {
+            alert(data.detail || 'Failed to upload dataset.');
+        }
+    } catch (err) {
+        alert('Server unreachable. Make sure FastAPI backend is running!');
+    }
+}
+
+// Render Summary & Preview Table
+function renderDataSummary(summary) {
+    document.getElementById('statsCard').classList.remove('hidden');
+    document.getElementById('statRows').innerText = summary.total_rows;
+    document.getElementById('statCols').innerText = summary.total_columns;
+    document.getElementById('statDuplicates').innerText = summary.duplicates_removed;
+    document.getElementById('statMissing').innerText = summary.missing_values_handled;
+
+    // Table Header
+    const tHeader = document.getElementById('tableHeader');
+    tHeader.innerHTML = `<tr>${summary.columns.map(col => `<th class="p-3 uppercase text-[10px] tracking-wider text-slate-400">${col}</th>`).join('')}</tr>`;
+
+    // Table Rows Preview
+    const tBody = document.getElementById('tableBody');
+    tBody.innerHTML = summary.preview.map(row => {
+        return `<tr class="hover:bg-slate-900/50">${summary.columns.map(col => `<td class="p-3 text-slate-300 border-t border-slate-800/40">${row[col] ?? 'N/A'}</td>`).join('')}</tr>`;
+    }).join('');
+}
+
+// Send Query to AI Analyzer Engine
+async function sendQuery() {
+    const queryInput = document.getElementById('queryInput');
+    const query = queryInput.value.trim();
+
+    if (!query) return;
+
+    const responseBox = document.getElementById('aiResponseBox');
+    const responseText = document.getElementById('aiResponseText');
+    responseBox.classList.remove('hidden');
+    responseText.innerText = 'Analyzing dataset with Python engine...';
+
+    try {
+        const response = await fetch(`${DATA_API_URL}/query`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query })
+        });
+
+        const data = await response.json();
+        if (response.ok && data.success) {
+            responseText.innerText = data.result.answer;
+        } else {
+            responseText.innerText = data.detail || 'Could not process query.';
+        }
+    } catch (err) {
+        responseText.innerText = 'Backend error while analyzing data.';
+    }
+}
+
+function logout() {
+    localStorage.clear();
+    window.location.href = 'login.html';
+}
