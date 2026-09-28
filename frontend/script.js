@@ -1,4 +1,4 @@
-// Live Render Backend API Base URLs
+// Live Render Backend API Base URLs (Ending with trailing slash)
 const API_URL = 'https://ai-data-analyzer-jjkj.onrender.com/api/auth';
 const DATA_API_URL = 'https://ai-data-analyzer-jjkj.onrender.com/api/data';
 
@@ -68,7 +68,7 @@ async function uploadDatasetFile(file) {
             alert(data.detail || 'Failed to upload dataset.');
         }
     } catch (err) {
-        alert('Backend is starting up or unreachable. Please wait 10 seconds and try again.');
+        alert('Server unreachable or route error. Please check backend API.');
     } finally {
         if (dropZone) {
             dropZone.style.opacity = '1';
