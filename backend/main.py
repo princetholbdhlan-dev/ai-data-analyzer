@@ -113,3 +113,41 @@ def login(user: UserLogin):
             "plan": db_user["plan"]
         }
     }
+    from fastapi import File, UploadFile
+import io
+from analyzer import clean_dataset_df, analyze_dataset_query
+
+# Global temporary storage for uploaded dataset
+CURRENT_DATASET = {"df": None}
+
+@app.post("/api/data/upload")
+async def upload_file(file: UploadFile = File(...)):
+    try:
+        contents = await file.read()
+        if file.filename.endswith('.csv'):
+            df = pd.read_csv(io.BytesIO(contents))
+        elif file.filename.endswith(('.xls', '.xlsx')):
+            df = pd.read_excel(io.BytesIO(contents))
+        else:
+            raise HTTPException(status_code=400, detail="Only CSV and Excel files are supported.")
+            
+        summary, cleaned_df = clean_dataset_df(df)
+        CURRENT_DATASET["df"] = cleaned_df
+        
+        return {
+            "success": True,
+            "filename": file.filename,
+            "summary": summary
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error processing file: {str(e)}")
+
+@app.post("/api/data/query")
+async def query_data(data: dict):
+    if CURRENT_DATASET["df"] is None:
+        raise HTTPException(status_code=400, detail="No dataset uploaded yet.")
+        
+    user_query = data.get("query", "")
+    result = analyze_dataset_query(CURRENT_DATASET["df"], user_query)
+    return {"success": True, "result": result}
+
