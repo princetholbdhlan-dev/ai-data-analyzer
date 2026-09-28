@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnalytixAI — Features & Tools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #080a12; color: #94a3b8; font-family: system-ui, -apple-system, sans-serif; }
+        .glass-card { background: rgba(15, 18, 35, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); border-radius: 16px; }
+        .glass-nav { background: rgba(8, 10, 18, 0.9); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        .text-gradient { background: linear-gradient(135deg, #c084fc 0%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .btn-primary { background: linear-gradient(135deg, #9333ea 0%, #0891b2 100%); }
+    </style>
+</head>
+<body class="bg-[#080a12] text-slate-400 min-h-screen flex flex-col justify-between">
+
+    <!-- NAVBAR -->
+    <nav class="glass-nav fixed top-0 left-0 right-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-400 flex items-center justify-center text-white font-black text-base shadow-lg shadow-purple-500/30">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <span class="text-xl font-extrabold text-white tracking-wide">Analytix<span class="text-purple-400">AI</span></span>
+            </a>
+
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="index.html" class="text-slate-300 hover:text-white">Platform</a>
+                <a href="features.html" class="text-white font-semibold">Tools</a>
+                <a href="pricing.html" class="text-slate-300 hover:text-white">Pricing</a>
+                <a href="contact.html" class="text-slate-300 hover:text-white">Contact</a>
+            </div>
+
+            <div class="hidden md:flex items-center gap-4">
+                <button onclick="alert('Phase 3')" class="text-sm font-semibold text-slate-300 hover:text-white">Log in</button>
+                <button onclick="alert('Phase 3')" class="btn-primary text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-lg shadow-purple-600/30">Get Started Free →</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="pt-32 pb-20 px-6 max-w-7xl mx-auto w-full">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h1 class="text-4xl font-black text-white mb-4">Powerful <span class="text-gradient">Analytics Suite</span></h1>
+            <p class="text-slate-300 text-base">Explore all the tools AnalytixAI provides to automate data cleaning, visual exploration, and SQL query generation.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass-card p-8 space-y-4">
+                <div class="w-12 h-12 rounded-xl bg-purple-600/30 text-purple-300 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                <h3 class="text-xl font-bold text-white">Smart Data Cleaner</h3>
+                <p class="text-xs text-slate-300 leading-relaxed">Automated null handling, outlier removal, and data standardization in a single click.</p>
+            </div>
+
+            <div class="glass-card p-8 space-y-4">
+                <div class="w-12 h-12 rounded-xl bg-cyan-600/30 text-cyan-300 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-chart-pie"></i></div>
+                <h3 class="text-xl font-bold text-white">Chart & Visual Studio</h3>
+                <p class="text-xs text-slate-300 leading-relaxed">Interactive Bar, Line, Scatter, and Pie charts generated dynamically with dark neon aesthetic.</p>
+            </div>
+
+            <div class="glass-card p-8 space-y-4">
+                <div class="w-12 h-12 rounded-xl bg-pink-600/30 text-pink-300 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-terminal"></i></div>
+                <h3 class="text-xl font-bold text-white">Natural Language SQL</h3>
+                <p class="text-xs text-slate-300 leading-relaxed">Ask questions in plain English and instantly get executed SQL queries and insight summaries.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="mt-auto border-t border-slate-800/80 py-8 px-6 bg-[#05070e]">
+        <div class="max-w-7xl mx-auto flex justify-between items-center text-xs text-slate-400">
+            <div>© 2026 AnalytixAI. All rights reserved.</div>
+            <div class="flex gap-6">
+                <a href="index.html" class="hover:text-white">Platform</a>
+                <a href="features.html" class="hover:text-white">Tools</a>
+                <a href="pricing.html" class="hover:text-white">Pricing</a>
+                <a href="contact.html" class="hover:text-white">Contact</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
