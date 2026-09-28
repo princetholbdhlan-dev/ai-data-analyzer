@@ -13,7 +13,7 @@ from analyzer import clean_dataset_df, analyze_dataset_query
 
 app = FastAPI(title="AnalytixAI API")
 
-# CORS Configuration (Frontend access ke liye)
+# CORS Configuration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -62,7 +62,7 @@ def create_access_token(data: dict):
 
 @app.get("/")
 def home():
-    return {"message": "AnalytixAI FastAPI Backend Running Successfully!"}
+    return {"status": "online", "message": "AnalytixAI FastAPI Backend Running Successfully!"}
 
 # 1. SIGNUP API
 @app.post("/api/auth/signup")
@@ -122,8 +122,9 @@ def login(user: UserLogin):
 
 # ----------------- DATA ANALYZER ROUTES -----------------
 
-# 4. FILE UPLOAD & SMART DATA CLEANER API
+# 4. FILE UPLOAD & SMART DATA CLEANER API (Dual route support)
 @app.post("/api/data/upload")
+@app.post("/api/data/upload/")
 async def upload_file(file: UploadFile = File(...)):
     try:
         contents = await file.read()
@@ -147,6 +148,7 @@ async def upload_file(file: UploadFile = File(...)):
 
 # 5. AI QUERY ASSISTANT API
 @app.post("/api/data/query")
+@app.post("/api/data/query/")
 async def query_data(data: dict):
     if CURRENT_DATASET["df"] is None:
         raise HTTPException(status_code=400, detail="No dataset uploaded yet.")
