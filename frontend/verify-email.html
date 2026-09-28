@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnalytixAI — Verify Email</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #080a12; color: #94a3b8; font-family: system-ui, -apple-system, sans-serif; }
+        .glass-card { background: rgba(15, 18, 35, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); border-radius: 16px; }
+        .btn-primary { background: linear-gradient(135deg, #9333ea 0%, #0891b2 100%); }
+    </style>
+</head>
+<body class="bg-[#080a12] text-slate-400 min-h-screen flex items-center justify-center p-6">
+
+    <div class="glass-card p-8 w-full max-w-md shadow-2xl text-center">
+        <div class="w-16 h-16 rounded-full bg-purple-600/20 text-purple-400 flex items-center justify-center text-2xl mx-auto mb-4 border border-purple-500/30">
+            <i class="fa-solid fa-envelope-circle-check"></i>
+        </div>
+
+        <h2 class="text-xl font-bold text-white mb-2">Check Your Email</h2>
+        <p class="text-xs text-slate-400 mb-6">We've sent a 6-digit verification code to your email address.</p>
+
+        <form onsubmit="event.preventDefault(); window.location.href='dashboard.html';" class="space-y-6">
+            <div class="flex justify-center gap-2">
+                <input type="text" maxlength="1" required class="w-10 h-12 text-center bg-[#13172b] border border-slate-800 text-white font-bold text-lg rounded-xl focus:outline-none focus:border-purple-500">
+                <input type="text" maxlength="1" required class="w-10 h-12 text-center bg-[#13172b] border border-slate-800 text-white font-bold text-lg rounded-xl focus:outline-none focus:border-purple-500">
+                <input type="text" maxlength="1" required class="w-10 h-12 text-center bg-[#13172b] border border-slate-800 text-white font-bold text-lg rounded-xl focus:outline-none focus:border-purple-500">
+                <input type="text" maxlength="1" required class="w-10 h-12 text-center bg-[#13172b] border border-slate-800 text-white font-bold text-lg rounded-xl focus:outline-none focus:border-purple-500">
+                <input type="text" maxlength="1" required class="w-10 h-12 text-center bg-[#13172b] border border-slate-800 text-white font-bold text-lg rounded-xl focus:outline-none focus:border-purple-500">
+                <input type="text" maxlength="1" required class="w-10 h-12 text-center bg-[#13172b] border border-slate-800 text-white font-bold text-lg rounded-xl focus:outline-none focus:border-purple-500">
+            </div>
+
+            <button type="submit" class="btn-primary w-full text-white text-xs font-bold py-3.5 rounded-xl shadow-lg shadow-purple-600/30">
+                Verify Email →
+            </button>
+        </form>
+
+        <p class="text-xs text-slate-500 mt-6">
+            Didn't receive the code? <button onclick="alert('Resent verification code!');" class="text-purple-400 hover:underline">Resend</button>
+        </p>
+    </div>
+
+</body>
+</html>
