@@ -1,274 +1,282 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnalytixAI — All-in-One Data Analyst SaaS Platform</title>
+    <title>AnalytixAI — Enterprise Data Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         body { background-color: #0b0d17; font-family: 'Inter', sans-serif; color: #94a3b8; }
         .glass-card { background: rgba(18, 20, 38, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); border-radius: 16px; }
-        .active-nav { background: rgba(139, 92, 246, 0.15); color: #c084fc; border-right: 3px solid #c084fc; }
+        .glass-nav { background: rgba(11, 13, 23, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        .nav-link.active { color: #c084fc; border-bottom: 2px solid #c084fc; }
     </style>
 </head>
-<body class="flex h-screen overflow-hidden selection:bg-purple-500 selection:text-white">
+<body class="min-h-screen flex flex-col justify-between selection:bg-purple-500 selection:text-white">
 
-    <!-- STEP 1: PUBLIC LANDING PAGE & WELCOME HERO -->
-    <div id="page-welcome" class="w-full h-full overflow-y-auto p-6 flex flex-col justify-center items-center">
-        <div class="glass-card p-10 text-center max-w-3xl mx-auto my-auto">
-            <div class="inline-flex items-center gap-2 bg-purple-950/60 border border-purple-800/50 text-purple-400 text-xs font-medium px-4 py-1.5 rounded-full mb-6">
-                <i class="fa-solid fa-sparkles"></i> Next-Gen Data Analyst Operating System
+    <!-- RESPONSIVE NAVBAR -->
+    <nav class="glass-nav fixed top-0 left-0 right-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-400 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-purple-500/30">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <span class="text-xl font-bold text-white tracking-wide">Analytix<span class="text-purple-400">AI</span></span>
             </div>
-            <h1 class="text-3xl md:text-5xl font-black text-white leading-tight mb-4">
-                All-in-One AI Platform For <span class="bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">Data Analytics & Cloud Storage</span>
-            </h1>
-            <p class="text-slate-400 text-sm md:text-base mb-8 max-w-xl mx-auto">
-                Clean datasets, run automated EDA, query datasets using AI, build interactive dashboards, and save all your projects in your cloud drive.
-            </p>
-            <div class="flex justify-center gap-4">
-                <button onclick="switchScreen('page-auth')" class="bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 text-white font-bold text-sm px-8 py-3.5 rounded-xl shadow-lg shadow-purple-500/25 transition-all">
-                    Get Started Free →
+
+            <!-- Desktop Nav Links -->
+            <div class="hidden md:flex items-center gap-8 text-sm font-semibold">
+                <button onclick="navigateTo('home')" id="nav-home" class="nav-link active py-1 text-slate-300 hover:text-white transition-all">Home</button>
+                <button onclick="navigateTo('features')" id="nav-features" class="nav-link py-1 text-slate-300 hover:text-white transition-all">Features</button>
+                <button onclick="navigateTo('pricing')" id="nav-pricing" class="nav-link py-1 text-slate-300 hover:text-white transition-all">Pricing</button>
+                <button onclick="navigateTo('about')" id="nav-about" class="nav-link py-1 text-slate-300 hover:text-white transition-all">About</button>
+                <button onclick="navigateTo('contact')" id="nav-contact" class="nav-link py-1 text-slate-300 hover:text-white transition-all">Contact</button>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="hidden md:flex items-center gap-4">
+                <button onclick="alert('Redirecting to App...')" class="bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-lg shadow-purple-500/20 transition-all">
+                    Launch App →
                 </button>
             </div>
-        </div>
-    </div>
 
-    <!-- STEP 2: USER AUTHENTICATION / REGISTRATION -->
-    <div id="page-auth" class="w-full h-full overflow-y-auto p-6 flex flex-col justify-center items-center hidden">
-        <div class="glass-card p-8 max-w-md w-full">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-white">Create Account / Sign In</h2>
-                <button onclick="switchScreen('page-welcome')" class="text-slate-500 hover:text-white text-xs"><i class="fa-solid fa-xmark text-base"></i></button>
+            <!-- Mobile Hamburger Toggle -->
+            <button onclick="toggleMobileMenu()" class="md:hidden text-white text-xl focus:outline-none">
+                <i class="fa-solid fa-bars" id="menuIcon"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden flex-col gap-4 pt-4 pb-2 border-t border-slate-800 mt-4 text-sm font-semibold">
+            <button onclick="navigateTo('home'); toggleMobileMenu();" class="text-left text-slate-300 hover:text-white py-1">Home</button>
+            <button onclick="navigateTo('features'); toggleMobileMenu();" class="text-left text-slate-300 hover:text-white py-1">Features</button>
+            <button onclick="navigateTo('pricing'); toggleMobileMenu();" class="text-left text-slate-300 hover:text-white py-1">Pricing</button>
+            <button onclick="navigateTo('about'); toggleMobileMenu();" class="text-left text-slate-300 hover:text-white py-1">About</button>
+            <button onclick="navigateTo('contact'); toggleMobileMenu();" class="text-left text-slate-300 hover:text-white py-1">Contact</button>
+            <button onclick="alert('Redirecting to App...')" class="bg-purple-600 text-white font-bold text-xs py-2.5 rounded-xl w-full mt-2">
+                Launch App →
+            </button>
+        </div>
+    </nav>
+
+    <!-- MAIN PAGE CONTENT CONTAINER -->
+    <main class="pt-24 pb-16 px-6 max-w-7xl mx-auto w-full">
+
+        <!-- 1. HOME & HERO SECTION (LANDING PAGE) -->
+        <section id="page-home" class="page-section space-y-16">
+            <!-- HERO SECTION -->
+            <div class="text-center max-w-3xl mx-auto pt-10">
+                <div class="inline-flex items-center gap-2 bg-purple-950/60 border border-purple-800/50 text-purple-400 text-xs font-medium px-4 py-1.5 rounded-full mb-6">
+                    <i class="fa-solid fa-sparkles"></i> Next-Gen Data Analyst Platform
+                </div>
+                <h1 class="text-4xl md:text-6xl font-black text-white leading-tight mb-6">
+                    Analyze Data Faster With <span class="bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">AI Intelligence</span>
+                </h1>
+                <p class="text-slate-400 text-base md:text-lg mb-8 max-w-2xl mx-auto">
+                    Clean datasets, generate interactive dashboards, write SQL queries in natural language, and save projects in your personal cloud storage.
+                </p>
+                <div class="flex justify-center gap-4">
+                    <button onclick="navigateTo('pricing')" class="bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 text-white font-bold text-sm px-8 py-3.5 rounded-xl shadow-lg shadow-purple-500/25 transition-all">
+                        Get Started Free →
+                    </button>
+                    <button onclick="navigateTo('features')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-sm px-6 py-3.5 rounded-xl border border-slate-700 transition-all">
+                        Explore Tools
+                    </button>
+                </div>
             </div>
-            <p class="text-xs text-slate-400 mb-6">Enter details to access your cloud workspace & multi-tool suite.</p>
-            
-            <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
-                    <input type="text" id="authName" required placeholder="Prince Badlan" class="w-full bg-[#14172c] border border-slate-800 text-white text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
-                    <input type="email" id="authEmail" required placeholder="prince@example.com" class="w-full bg-[#14172c] border border-slate-800 text-white text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
-                    <input type="password" required placeholder="••••••••" class="w-full bg-[#14172c] border border-slate-800 text-white text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500">
-                </div>
-                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-3.5 rounded-xl shadow-lg shadow-purple-600/30 transition-all mt-2">
-                    Enter SaaS Platform →
-                </button>
-            </form>
-        </div>
-    </div>
 
-    <!-- STEP 3: MAIN SAAS MULTI-TOOL PLATFORM ARCHITECTURE -->
-    <div id="page-platform" class="w-full h-full flex overflow-hidden hidden">
-        
-        <!-- Left Multi-Tool Sidebar -->
-        <aside class="w-64 bg-[#0e101f] border-r border-slate-800/60 flex flex-col justify-between py-6 px-4 shrink-0">
-            <div>
-                <div class="flex items-center gap-3 px-3 mb-8 cursor-pointer" onclick="switchScreen('page-welcome')">
-                    <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-400 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-purple-500/30">
-                        <i class="fa-solid fa-bolt"></i>
+            <!-- HERO PREVIEW CARD -->
+            <div class="glass-card p-4 md:p-6 max-w-5xl mx-auto shadow-2xl shadow-purple-900/20">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
+                        <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
+                        <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
                     </div>
-                    <span class="text-lg font-bold text-white tracking-wide">Analytix<span class="text-purple-400">AI</span></span>
+                    <span class="text-xs font-mono text-slate-500">app.analytixai.com</span>
                 </div>
-
-                <div class="text-[10px] font-bold text-slate-500 px-3 mb-2 uppercase tracking-wider">Analyst Suite</div>
-                <nav class="space-y-1 mb-6">
-                    <button onclick="switchToolTab('tab-overview', this)" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold active-nav transition-all text-left">
-                        <i class="fa-solid fa-border-all text-sm w-4"></i> Overview
-                    </button>
-                    <button onclick="switchToolTab('tab-cleaner', this)" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all text-left">
-                        <i class="fa-solid fa-wand-magic-sparkles text-sm w-4"></i> Data Cleaner
-                    </button>
-                    <button onclick="switchToolTab('tab-charts', this)" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all text-left">
-                        <i class="fa-solid fa-chart-pie text-sm w-4"></i> Chart Studio
-                    </button>
-                    <button onclick="switchToolTab('tab-sql', this)" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all text-left">
-                        <i class="fa-solid fa-terminal text-sm w-4"></i> AI SQL & Query
-                    </button>
-                </nav>
-
-                <div class="text-[10px] font-bold text-slate-500 px-3 mb-2 uppercase tracking-wider">User Cloud</div>
-                <nav class="space-y-1">
-                    <button onclick="switchToolTab('tab-storage', this)" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all text-left">
-                        <i class="fa-solid fa-database text-sm w-4"></i> Saved Datasets
-                    </button>
-                    <button onclick="switchToolTab('tab-account', this)" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all text-left">
-                        <i class="fa-solid fa-user-gear text-sm w-4"></i> Account & Plan
-                    </button>
-                </nav>
-            </div>
-
-            <!-- Profile Badge -->
-            <div class="glass-card p-3 flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-purple-600/30 border border-purple-500/40 flex items-center justify-center text-purple-300 font-bold text-xs" id="userInitial">
-                    PB
-                </div>
-                <div class="overflow-hidden">
-                    <p class="text-xs font-bold text-white truncate" id="displayName">Prince Badlan</p>
-                    <p class="text-[10px] text-emerald-400 font-semibold">Pro Plan Active</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+                    <div class="bg-[#14172c] p-4 rounded-xl border border-slate-800/80">
+                        <p class="text-xs text-slate-400">Total Rows Processed</p>
+                        <h3 class="text-xl font-bold text-white mt-1">1,248,500</h3>
+                    </div>
+                    <div class="bg-[#14172c] p-4 rounded-xl border border-slate-800/80">
+                        <p class="text-xs text-slate-400">Automated Data Cleanse</p>
+                        <h3 class="text-xl font-bold text-emerald-400 mt-1">99.8% Accuracy</h3>
+                    </div>
+                    <div class="bg-[#14172c] p-4 rounded-xl border border-slate-800/80">
+                        <p class="text-xs text-slate-400">Cloud Storage Saved</p>
+                        <h3 class="text-xl font-bold text-cyan-400 mt-1">45.2 GB</h3>
+                    </div>
                 </div>
             </div>
-        </aside>
+        </section>
 
-        <!-- Main Workspace Viewport -->
-        <main class="flex-1 overflow-y-auto p-6 md:p-8 bg-gradient-to-br from-[#0b0d17] via-[#101226] to-[#0b0d17]">
-            
-            <!-- TOOL 1: OVERVIEW & NEW FILE UPLOAD -->
-            <section id="tab-overview" class="tool-content space-y-6">
-                <div>
-                    <h1 class="text-2xl font-bold text-white">Overview Workspace</h1>
-                    <p class="text-xs text-slate-500 mt-1">Upload new datasets or access recent projects</p>
-                </div>
+        <!-- 2. FEATURES PAGE -->
+        <section id="page-features" class="page-section hidden space-y-12">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-3xl font-black text-white">Powerful Analytics Modules</h2>
+                <p class="text-slate-400 text-sm mt-2">Everything you need to transform raw datasets into executive insights.</p>
+            </div>
 
-                <div class="glass-card p-8 text-center border-dashed border-2 border-purple-500/30 hover:border-purple-500/60 transition-all">
-                    <i class="fa-solid fa-cloud-arrow-up text-3xl text-purple-400 mb-3"></i>
-                    <h3 class="text-base font-bold text-white mb-1">Upload Dataset to Cloud Space</h3>
-                    <p class="text-xs text-slate-400 mb-4">Supports CSV, XLSX up to 50MB</p>
-                    <input type="file" id="fileInput" accept=".csv, .xlsx, .xls" class="hidden" onchange="document.getElementById('fileStatus').innerText = this.files[0].name">
-                    <label for="fileInput" class="cursor-pointer bg-slate-800 hover:bg-slate-700 text-xs font-semibold px-4 py-2.5 rounded-xl text-slate-200 inline-block mb-3 border border-slate-700">
-                        Choose File
-                    </label>
-                    <div id="fileStatus" class="text-xs text-purple-400 font-mono mb-4">No file selected</div>
-                    <button class="bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-lg shadow-purple-500/20">
-                        Upload & Open Tools
-                    </button>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card p-6 space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-purple-600/20 text-purple-400 flex items-center justify-center text-lg"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                    <h3 class="text-lg font-bold text-white">Smart Data Cleaner</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Remove null values, fix formatting issues, drop duplicate records, and standardize column types automatically.</p>
                 </div>
-            </section>
+                <div class="glass-card p-6 space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-cyan-600/20 text-cyan-400 flex items-center justify-center text-lg"><i class="fa-solid fa-chart-pie"></i></div>
+                    <h3 class="text-lg font-bold text-white">Interactive Chart Studio</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Build custom Bar, Line, Scatter, and Doughnut charts with instant dark-neon customization and image export.</p>
+                </div>
+                <div class="glass-card p-6 space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-pink-600/20 text-pink-400 flex items-center justify-center text-lg"><i class="fa-solid fa-terminal"></i></div>
+                    <h3 class="text-lg font-bold text-white">AI SQL Generator</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Type plain text questions and get production-ready SQL queries or Python Pandas code instantly.</p>
+                </div>
+            </div>
+        </section>
 
-            <!-- TOOL 2: DATA CLEANER -->
-            <section id="tab-cleaner" class="tool-content space-y-6 hidden">
-                <div>
-                    <h1 class="text-2xl font-bold text-white">🧹 Smart Data Cleaner</h1>
-                    <p class="text-xs text-slate-500 mt-1">Automated data pre-processing and quality transformation</p>
-                </div>
-                <div class="glass-card p-6">
-                    <p class="text-xs text-slate-300">Clean nulls, drop duplicates, fix column headers, and re-export cleaned CSV files.</p>
-                </div>
-            </section>
+        <!-- 3. PRICING PAGE -->
+        <section id="page-pricing" class="page-section hidden space-y-12">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-3xl font-black text-white">Simple, Transparent Pricing</h2>
+                <p class="text-slate-400 text-sm mt-2">Choose the plan that fits your data workflow.</p>
+            </div>
 
-            <!-- TOOL 3: CHART STUDIO -->
-            <section id="tab-charts" class="tool-content space-y-6 hidden">
-                <div>
-                    <h1 class="text-2xl font-bold text-white">📈 Interactive Chart Studio</h1>
-                    <p class="text-xs text-slate-500 mt-1">Generate bar, line, pie, and scatter plots</p>
-                </div>
-                <div class="glass-card p-6 h-80 flex items-center justify-center">
-                    <p class="text-xs text-slate-500">Select columns to plot charts</p>
-                </div>
-            </section>
-
-            <!-- TOOL 4: AI SQL & QUERY ASSISTANT -->
-            <section id="tab-sql" class="tool-content space-y-6 hidden">
-                <div>
-                    <h1 class="text-2xl font-bold text-white">🤖 AI SQL & Pandas Query Assistant</h1>
-                    <p class="text-xs text-slate-500 mt-1">Ask questions in plain text to get SQL queries and code</p>
-                </div>
-                <div class="glass-card p-6">
-                    <textarea placeholder="e.g. Write a SQL query to get top 5 sales regions by profit..." class="w-full bg-[#14172c] border border-slate-800 text-white text-xs rounded-xl p-4 h-28 focus:outline-none focus:border-purple-500"></textarea>
-                    <button class="bg-purple-600 text-white text-xs font-bold px-5 py-2.5 rounded-xl mt-3">Generate Query</button>
-                </div>
-            </section>
-
-            <!-- TOOL 5: USER CLOUD DRIVE (SAVED DATASETS) -->
-            <section id="tab-storage" class="tool-content space-y-6 hidden">
-                <div class="flex justify-between items-center">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Free Plan -->
+                <div class="glass-card p-8 flex flex-col justify-between">
                     <div>
-                        <h1 class="text-2xl font-bold text-white">📁 Saved Datasets & Cloud Storage</h1>
-                        <p class="text-xs text-slate-500 mt-1">Your saved files and historical analysis reports</p>
+                        <h3 class="text-lg font-bold text-white">Starter</h3>
+                        <div class="my-4">
+                            <span class="text-4xl font-black text-white">$0</span>
+                            <span class="text-xs text-slate-400">/ forever</span>
+                        </div>
+                        <ul class="space-y-3 text-xs text-slate-300 mb-8">
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Up to 5MB file uploads</li>
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Basic Data Cleaner</li>
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> 3 Saved Cloud Datasets</li>
+                        </ul>
                     </div>
-                    <button class="bg-purple-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl"><i class="fa-solid fa-plus mr-1"></i> Save Current Dataset</button>
+                    <button class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs py-3 rounded-xl border border-slate-700">Get Started</button>
                 </div>
 
-                <div class="glass-card p-6">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs">
-                            <thead>
-                                <tr class="text-slate-500 border-b border-slate-800">
-                                    <th class="pb-3 font-semibold">File Name</th>
-                                    <th class="pb-3 font-semibold">Size</th>
-                                    <th class="pb-3 font-semibold">Date Saved</th>
-                                    <th class="pb-3 font-semibold">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-800/50 text-slate-300">
-                                <tr>
-                                    <td class="py-3.5 font-medium text-white flex items-center gap-2">
-                                        <i class="fa-solid fa-file-csv text-emerald-400 text-base"></i> Q3_Sales_Report.csv
-                                    </td>
-                                    <td class="py-3.5 text-slate-400">2.4 MB</td>
-                                    <td class="py-3.5 text-slate-400">Sep 28, 2026</td>
-                                    <td class="py-3.5">
-                                        <button class="text-purple-400 hover:text-purple-300 font-bold mr-3">Load</button>
-                                        <button class="text-rose-400 hover:text-rose-300 font-bold">Delete</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-3.5 font-medium text-white flex items-center gap-2">
-                                        <i class="fa-solid fa-file-excel text-cyan-400 text-base"></i> Customer_Churn_Data.xlsx
-                                    </td>
-                                    <td class="py-3.5 text-slate-400">5.1 MB</td>
-                                    <td class="py-3.5 text-slate-400">Sep 25, 2026</td>
-                                    <td class="py-3.5">
-                                        <button class="text-purple-400 hover:text-purple-300 font-bold mr-3">Load</button>
-                                        <button class="text-rose-400 hover:text-rose-300 font-bold">Delete</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <!-- Pro Plan (Highlighted) -->
+                <div class="glass-card p-8 flex flex-col justify-between border-2 border-purple-500 relative">
+                    <span class="absolute -top-3 right-6 bg-purple-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Most Popular</span>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Pro Analyst</h3>
+                        <div class="my-4">
+                            <span class="text-4xl font-black text-white">$19</span>
+                            <span class="text-xs text-slate-400">/ month</span>
+                        </div>
+                        <ul class="space-y-3 text-xs text-slate-300 mb-8">
+                            <li><i class="fa-solid fa-check text-purple-400 mr-2"></i> Unlimited File Uploads (Up to 500MB)</li>
+                            <li><i class="fa-solid fa-check text-purple-400 mr-2"></i> AI SQL & Query Assistant</li>
+                            <li><i class="fa-solid fa-check text-purple-400 mr-2"></i> 50GB Cloud Database Storage</li>
+                            <li><i class="fa-solid fa-check text-purple-400 mr-2"></i> Executive PDF Export</li>
+                        </ul>
                     </div>
+                    <button class="w-full bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-500 text-white font-bold text-xs py-3 rounded-xl shadow-lg shadow-purple-500/30">Upgrade to Pro</button>
                 </div>
-            </section>
 
-            <!-- TOOL 6: ACCOUNT SETTINGS -->
-            <section id="tab-account" class="tool-content space-y-6 hidden">
-                <div>
-                    <h1 class="text-2xl font-bold text-white">👤 Account & Subscription</h1>
-                    <p class="text-xs text-slate-500 mt-1">Manage profile and storage limits</p>
-                </div>
-                <div class="glass-card p-6 max-w-lg space-y-4">
-                    <p class="text-xs text-slate-300">Storage Used: <span class="text-white font-bold">7.5 MB / 500 MB</span></p>
-                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                        <div class="bg-purple-500 h-full w-[15%]"></div>
+                <!-- Enterprise Plan -->
+                <div class="glass-card p-8 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Enterprise</h3>
+                        <div class="my-4">
+                            <span class="text-4xl font-black text-white">$49</span>
+                            <span class="text-xs text-slate-400">/ month</span>
+                        </div>
+                        <ul class="space-y-3 text-xs text-slate-300 mb-8">
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Unlimited Cloud Storage</li>
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Team Workspaces & Roles</li>
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Custom API Integrations</li>
+                        </ul>
                     </div>
+                    <button class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs py-3 rounded-xl border border-slate-700">Contact Sales</button>
                 </div>
-            </section>
+            </div>
+        </section>
 
-        </main>
-    </div>
+        <!-- 4. ABOUT PAGE -->
+        <section id="page-about" class="page-section hidden space-y-8 max-w-3xl mx-auto">
+            <div class="text-center">
+                <h2 class="text-3xl font-black text-white">About AnalytixAI</h2>
+                <p class="text-slate-400 text-sm mt-2">Built for modern data analysts and business intelligence teams.</p>
+            </div>
 
+            <div class="glass-card p-8 space-y-4 text-xs md:text-sm text-slate-300 leading-relaxed">
+                <p>AnalytixAI was created to bridge the gap between complex data processing and seamless visualization. Traditional data analysis tools require switching between Python notebooks, SQL workbenches, and charting platforms.</p>
+                <p>Our platform combines data pre-processing, AI code generation, and cloud dataset management into a single, high-performance workspace.</p>
+            </div>
+        </section>
+
+        <!-- 5. CONTACT PAGE -->
+        <section id="page-contact" class="page-section hidden max-w-lg mx-auto">
+            <div class="glass-card p-8">
+                <h2 class="text-xl font-bold text-white mb-2 text-center">Get in Touch</h2>
+                <p class="text-xs text-slate-400 mb-6 text-center">Have a question or custom feature request? Send us a message.</p>
+
+                <form onsubmit="event.preventDefault(); alert('Message sent!');" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Your Name</label>
+                        <input type="text" required placeholder="Prince Badlan" class="w-full bg-[#14172c] border border-slate-800 text-white text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
+                        <input type="email" required placeholder="name@company.com" class="w-full bg-[#14172c] border border-slate-800 text-white text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Message</label>
+                        <textarea required rows="4" placeholder="How can we help you?" class="w-full bg-[#14172c] border border-slate-800 text-white text-xs rounded-xl p-4 focus:outline-none focus:border-purple-500"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-3.5 rounded-xl shadow-lg shadow-purple-600/30 transition-all">
+                        Send Message →
+                    </button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800/80 py-8 px-6 bg-[#090b14]">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+            <div>© 2026 AnalytixAI Inc. All rights reserved.</div>
+            <div class="flex gap-6">
+                <button onclick="navigateTo('home')" class="hover:text-white">Home</button>
+                <button onclick="navigateTo('features')" class="hover:text-white">Features</button>
+                <button onclick="navigateTo('pricing')" class="hover:text-white">Pricing</button>
+                <button onclick="navigateTo('contact')" class="hover:text-white">Contact</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- NAVIGATION SWITCHER SCRIPT -->
     <script>
-        function switchScreen(screenId) {
-            document.getElementById('page-welcome').classList.add('hidden');
-            document.getElementById('page-auth').classList.add('hidden');
-            document.getElementById('page-platform').classList.add('hidden');
-            document.getElementById(screenId).classList.remove('hidden');
+        function navigateTo(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page-section').forEach(el => el.classList.add('hidden'));
+            
+            // Show requested page
+            document.getElementById('page-' + pageId).classList.remove('hidden');
+
+            // Update active nav styling
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            const activeNav = document.getElementById('nav-' + pageId);
+            if (activeNav) activeNav.classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function handleAuthSubmit(event) {
-            event.preventDefault();
-            const name = document.getElementById('authName').value;
-            document.getElementById('displayName').innerText = name;
-            document.getElementById('userInitial').innerText = name.substring(0, 2).toUpperCase();
-            switchScreen('page-platform');
-        }
-
-        function switchToolTab(tabId, btnElement) {
-            document.querySelectorAll('.tool-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.nav-btn').forEach(el => {
-                el.classList.remove('active-nav');
-                el.classList.add('text-slate-400');
-            });
-
-            document.getElementById(tabId).classList.remove('hidden');
-            btnElement.classList.add('active-nav');
-            btnElement.classList.remove('text-slate-400');
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('flex');
         }
     </script>
 </body>
