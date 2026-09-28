@@ -3,131 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnalytixAI — Enterprise Data Suite</title>
-    <link rel="stylesheet" href="style.css">
+    <title>AnalytixAI — Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #0b0d17; font-family: 'Inter', sans-serif; color: #94a3b8; }
+        .glass-card { background: rgba(18, 20, 38, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); border-radius: 16px; }
+        .active-nav { background: rgba(139, 92, 246, 0.15); color: #c084fc; border-right: 3px solid #c084fc; }
+    </style>
 </head>
-<body>
+<body class="flex h-screen overflow-hidden selection:bg-purple-500 selection:text-white">
 
-    <!-- Header Navigation -->
-    <header class="navbar">
-        <div class="nav-container">
-            <div class="logo" onclick="location.reload()">
-                <span class="logo-icon">📊</span>
-                <span class="logo-text">Analytix<span class="logo-accent">AI</span></span>
+    <!-- Left Sidebar -->
+    <aside class="w-64 bg-[#0e101f] border-r border-slate-800/60 flex flex-col justify-between py-6 px-4">
+        <div>
+            <div class="flex items-center gap-3 px-3 mb-8">
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-400 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-purple-500/30">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <span class="text-lg font-bold text-white tracking-wide">Analytix<span class="text-purple-400">AI</span></span>
             </div>
-            <nav class="nav-links" id="mainNav" style="display: none;">
-                <a href="#" class="nav-link active" id="nav-home" onclick="switchPage('home')">📊 Overview</a>
-                <a href="#" class="nav-link" id="nav-cleaner" onclick="switchPage('cleaner')">🧹 Data Cleaner</a>
-                <a href="#" class="nav-link" id="nav-charts" onclick="switchPage('charts')">📈 Chart Studio</a>
-                <a href="#" class="nav-link" id="nav-assistant" onclick="switchPage('assistant')">🤖 AI Assistant</a>
-                <a href="#" class="nav-link" id="nav-reports" onclick="switchPage('reports')">📑 PDF Reports</a>
+
+            <nav class="space-y-1">
+                <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-xl text-xs font-semibold active-nav transition-all">
+                    <i class="fa-solid fa-border-all text-sm"></i> Dashboard
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all">
+                    <i class="fa-solid fa-chart-line text-sm"></i> Reports
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all">
+                    <i class="fa-solid fa-bullhorn text-sm"></i> Campaigns
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all">
+                    <i class="fa-solid fa-users text-sm"></i> Users
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all">
+                    <i class="fa-solid fa-gear text-sm"></i> Settings
+                </a>
             </nav>
         </div>
-    </header>
+    </aside>
 
-    <main class="main-content">
-
-        <!-- STEP 1: Welcome / Hero Banner -->
-        <div id="step-welcome" style="background: #131c2e; border: 1px solid #1e293b; border-radius: 16px; padding: 40px 20px; margin-bottom: 24px; text-align: center;">
-            <div style="display: inline-block; background: rgba(30, 58, 138, 0.6); border: 1px solid rgba(30, 64, 175, 0.5); color: #60a5fa; font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; margin-bottom: 14px;">
-                ✨ Enterprise Data Analyst Workspace
-            </div>
-            
-            <h1 style="font-size: 28px; font-weight: 800; color: #ffffff; margin-bottom: 12px; line-height: 1.3;">
-                Turn Raw Data Into <span style="color: #38bdf8;">Actionable Insights</span>
-            </h1>
-            
-            <p style="color: #94a3b8; font-size: 14px; max-width: 600px; margin: 0 auto 24px auto; line-height: 1.5;">
-                Clean datasets, generate interactive charts, run AI analysis, and export executive PDF reports — all in one unified workspace.
-            </p>
-
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto p-8 bg-gradient-to-br from-[#0b0d17] via-[#101226] to-[#0b0d17]">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-8">
             <div>
-                <button onclick="goToStep('step-register')" style="background: #2563eb; color: #ffffff; font-size: 15px; font-weight: 700; padding: 12px 28px; border-radius: 10px; border: none; cursor: pointer;">
-                    Get Started Free →
-                </button>
+                <h1 class="text-2xl font-bold text-white">Overview</h1>
+                <p class="text-xs text-slate-500 mt-1">Date range: Oct 1 - Oct 31, 2026</p>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div class="relative">
+                    <input type="text" placeholder="Search..." class="bg-[#14172c] border border-slate-800 text-slate-200 text-xs rounded-xl pl-9 pr-4 py-2.5 focus:outline-none focus:border-purple-500 w-48">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-500 text-xs"></i>
+                </div>
+                <div class="w-9 h-9 rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-300 font-bold text-xs">
+                    PB
+                </div>
             </div>
         </div>
 
-        <!-- STEP 2: Registration / Login Form (Initially Hidden) -->
-        <div id="step-register" style="display: none; max-width: 450px; margin: 0 auto; background: #131c2e; border: 1px solid #1e293b; border-radius: 16px; padding: 32px 24px;">
-            <h2 style="color: #ffffff; font-size: 20px; font-weight: 700; text-align: center; margin-bottom: 8px;">Create Your Account</h2>
-            <p style="color: #94a3b8; font-size: 13px; text-align: center; margin-bottom: 24px;">Enter your details to access the AI data workspace</p>
-            
-            <form id="registrationForm" onsubmit="handleRegistration(event)">
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; color: #cbd5e1; font-size: 12px; margin-bottom: 6px; font-weight: 600;">Full Name</label>
-                    <input type="text" id="userName" required placeholder="e.g. Rahul Sharma" style="width: 100%; padding: 10px 12px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #ffffff; font-size: 14px; box-sizing: border-box;">
+        <!-- 4 Top Metric Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
+            <div class="glass-card p-5 relative overflow-hidden">
+                <p class="text-xs font-medium text-slate-400">Total Revenue</p>
+                <div class="flex items-baseline justify-between mt-2">
+                    <h2 class="text-2xl font-black text-white">$248,510.80</h2>
+                    <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full">+12.5%</span>
                 </div>
-
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; color: #cbd5e1; font-size: 12px; margin-bottom: 6px; font-weight: 600;">Email Address</label>
-                    <input type="email" id="userEmail" required placeholder="name@company.com" style="width: 100%; padding: 10px 12px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #ffffff; font-size: 14px; box-sizing: border-box;">
-                </div>
-
-                <div style="margin-bottom: 24px;">
-                    <label style="display: block; color: #cbd5e1; font-size: 12px; margin-bottom: 6px; font-weight: 600;">Role / Occupation</label>
-                    <select id="userRole" style="width: 100%; padding: 10px 12px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #ffffff; font-size: 14px; box-sizing: border-box;">
-                        <option value="Data Analyst">Data Analyst</option>
-                        <option value="Business Owner">Business Owner</option>
-                        <option value="Student">Student</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-
-                <button type="submit" style="width: 100%; background: #2563eb; color: #ffffff; font-size: 14px; font-weight: 700; padding: 12px; border-radius: 8px; border: none; cursor: pointer;">
-                    Continue to Workspace →
-                </button>
-            </form>
-        </div>
-
-        <!-- STEP 3: Workspace & File Uploader (Initially Hidden) -->
-        <div id="step-workspace" style="display: none;">
-            
-            <div style="background: rgba(37, 99, 235, 0.1); border: 1px solid rgba(37, 99, 235, 0.3); border-radius: 12px; padding: 12px 16px; margin-bottom: 20px; display: flex; justify-content: space-between; items-center;">
-                <span id="welcomeUserText" style="color: #60a5fa; font-size: 13px; font-weight: 600;">Welcome!</span>
-                <span style="color: #94a3b8; font-size: 12px;">AnalytixAI Workspace Active</span>
             </div>
 
-            <!-- File Upload Section -->
-            <section id="globalUploader" class="upload-card">
-                <div class="file-drop-area">
-                    <div class="upload-icon">📁</div>
-                    <p class="upload-title">Choose CSV or Excel Dataset</p>
-                    <p class="upload-sub">Upload once to unlock all AI tools across the suite</p>
-                    <input type="file" id="fileInput" accept=".csv, .xlsx, .xls">
-                    <span class="file-name" id="fileNameDisplay">No file selected</span>
+            <div class="glass-card p-5 relative overflow-hidden">
+                <p class="text-xs font-medium text-slate-400">Active Users</p>
+                <div class="flex items-baseline justify-between mt-2">
+                    <h2 class="text-2xl font-black text-white">18,342</h2>
+                    <span class="text-[10px] font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full">+8.2%</span>
                 </div>
-                <button id="analyzeBtn" onclick="uploadAndAnalyze()">Analyze & Process Dataset</button>
-            </section>
+            </div>
+
+            <div class="glass-card p-5 relative overflow-hidden">
+                <p class="text-xs font-medium text-slate-400">Conversion Rate</p>
+                <div class="flex items-baseline justify-between mt-2">
+                    <h2 class="text-2xl font-black text-white">3.8%</h2>
+                    <span class="text-[10px] font-bold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-full">+1.4%</span>
+                </div>
+            </div>
+
+            <div class="glass-card p-5 relative overflow-hidden">
+                <p class="text-xs font-medium text-slate-400">Avg. Session Duration</p>
+                <div class="flex items-baseline justify-between mt-2">
+                    <h2 class="text-2xl font-black text-white">4m 12s</h2>
+                    <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full">+4.1%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Analytics Section (Line Chart + Donut Chart) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <div class="glass-card p-6 lg:col-span-2">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-sm font-bold text-white">Revenue Growth</h3>
+                    <span class="text-xs text-slate-400 bg-slate-800/60 px-3 py-1 rounded-lg">Monthly Revenue</span>
+                </div>
+                <div class="h-64">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="text-sm font-bold text-white mb-4">Traffic Sources</h3>
+                <div class="h-52 flex justify-center items-center">
+                    <canvas id="trafficChart"></canvas>
+                </div>
+                <div class="grid grid-cols-2 gap-2 mt-4 text-[11px]">
+                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span> Direct: 35%</div>
+                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Organic: 30%</div>
+                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Referral: 20%</div>
+                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-pink-500"></span> Social: 15%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Section (Bar Chart + Table) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="glass-card p-6">
+                <h3 class="text-sm font-bold text-white mb-4">User Engagement</h3>
+                <div class="h-52">
+                    <canvas id="engagementChart"></canvas>
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="text-sm font-bold text-white mb-4">Top Performers</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead>
+                            <tr class="text-slate-500 border-b border-slate-800">
+                                <th class="pb-3 font-semibold">Workspace</th>
+                                <th class="pb-3 font-semibold">Revenue</th>
+                                <th class="pb-3 font-semibold">Growth</th>
+                                <th class="pb-3 font-semibold">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/50 text-slate-300">
+                            <tr>
+                                <td class="py-3 font-medium text-white">Workspace 1</td>
+                                <td class="py-3">$248,510.80</td>
+                                <td class="py-3 text-emerald-400">+12.5%</td>
+                                <td class="py-3"><span class="bg-cyan-500/10 text-cyan-400 text-[10px] px-2 py-0.5 rounded-full font-bold">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 font-medium text-white">Workspace 2</td>
+                                <td class="py-3">$234,082.00</td>
+                                <td class="py-3 text-emerald-400">+8.2%</td>
+                                <td class="py-3"><span class="bg-cyan-500/10 text-cyan-400 text-[10px] px-2 py-0.5 rounded-full font-bold">Growth</span></td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 font-medium text-white">Workspace 3</td>
+                                <td class="py-3">$139,000.00</td>
+                                <td class="py-3 text-rose-400">-1.1%</td>
+                                <td class="py-3"><span class="bg-purple-500/10 text-purple-400 text-[10px] px-2 py-0.5 rounded-full font-bold">Delayed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
     </main>
 
-    <script src="script.js"></script>
-
-    <!-- Navigation & Registration Logic -->
     <script>
-        function goToStep(stepId) {
-            document.getElementById('step-welcome').style.display = 'none';
-            document.getElementById('step-register').style.display = 'none';
-            document.getElementById('step-workspace').style.display = 'none';
+        // Line Chart (Revenue Growth)
+        const ctx1 = document.getElementById('revenueChart').getContext('2d');
+        const purpleGradient = ctx1.createLinearGradient(0, 0, 0, 250);
+        purpleGradient.addColorStop(0, 'rgba(168, 85, 247, 0.4)');
+        purpleGradient.addColorStop(1, 'rgba(168, 85, 247, 0.0)');
 
-            document.getElementById(stepId).style.display = 'block';
-        }
+        new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: ['Jul', 'Aug', 'Sep', 'Oct'],
+                datasets: [{
+                    label: 'Revenue',
+                    data: [20000, 35000, 60000, 48000],
+                    borderColor: '#a855f7',
+                    borderWidth: 3,
+                    fill: true,
+                    backgroundColor: purpleGradient,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#c084fc'
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { color: '#64748b' } }, y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b' } } } }
+        });
 
-        function handleRegistration(event) {
-            event.preventDefault();
-            const name = document.getElementById('userName').value;
-            
-            document.getElementById('welcomeUserText').innerText = "Welcome, " + name + " 👋";
-            
-            // Show Navigation bar and Workspace
-            document.getElementById('mainNav').style.display = 'flex';
-            goToStep('step-workspace');
-        }
+        // Donut Chart (Traffic)
+        new Chart(document.getElementById('trafficChart').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Direct', 'Organic', 'Referral', 'Social'],
+                datasets: [{
+                    data: [35, 30, 20, 15],
+                    backgroundColor: ['#a855f7', '#22d3ee', '#6366f1', '#ec4899'],
+                    borderWidth: 0
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '75%' }
+        });
+
+        // Bar Chart (Engagement)
+        new Chart(document.getElementById('engagementChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    data: [40, 60, 90, 70, 85, 50, 65],
+                    backgroundColor: '#22d3ee',
+                    borderRadius: 6
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { color: '#64748b' } }, y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b' } } } }
+        });
     </script>
 </body>
 </html>
