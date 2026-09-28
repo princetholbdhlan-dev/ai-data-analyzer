@@ -1,10 +1,15 @@
-from fastapi import FastAPI, HTTPException, Status
+import pandas as pd
+import io
+import random
+from datetime import datetime, timedelta
+from fastapi import FastAPI, HTTPException, Status, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 from passlib.context import CryptContext
-from datetime import datetime, timedelta
 from jose import jwt
-import random
+
+# Data Analyzer Helper Functions
+from analyzer import clean_dataset_df, analyze_dataset_query
 
 app = FastAPI(title="AnalytixAI API")
 
@@ -22,10 +27,11 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 SECRET_KEY = "analytix_ai_secret_key_2026"
 ALGORITHM = "HS256"
 
-# Temporary In-Memory Database (Demo Purpose)
+# Temporary In-Memory Storage
 users_db = {}
+CURRENT_DATASET = {"df": None}
 
-# Schemas
+# Pydantic Schemas
 class UserSignup(BaseModel):
     fullName: str
     email: EmailStr
@@ -52,7 +58,7 @@ def create_access_token(data: dict):
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-# ----------------- ROUTES -----------------
+# ----------------- AUTHENTICATION ROUTES -----------------
 
 @app.get("/")
 def home():
@@ -113,13 +119,10 @@ def login(user: UserLogin):
             "plan": db_user["plan"]
         }
     }
-    from fastapi import File, UploadFile
-import io
-from analyzer import clean_dataset_df, analyze_dataset_query
 
-# Global temporary storage for uploaded dataset
-CURRENT_DATASET = {"df": None}
+# ----------------- DATA ANALYZER ROUTES -----------------
 
+# 4. FILE UPLOAD & SMART DATA CLEANER API
 @app.post("/api/data/upload")
 async def upload_file(file: UploadFile = File(...)):
     try:
@@ -142,6 +145,7 @@ async def upload_file(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing file: {str(e)}")
 
+# 5. AI QUERY ASSISTANT API
 @app.post("/api/data/query")
 async def query_data(data: dict):
     if CURRENT_DATASET["df"] is None:
@@ -150,4 +154,3 @@ async def query_data(data: dict):
     user_query = data.get("query", "")
     result = analyze_dataset_query(CURRENT_DATASET["df"], user_query)
     return {"success": True, "result": result}
-
