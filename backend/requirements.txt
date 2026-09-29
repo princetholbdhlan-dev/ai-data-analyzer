@@ -1,9 +1,10 @@
 fastapi
 uvicorn
+pydantic
+pydantic[email]
+email-validator
 pandas
 openpyxl
 python-multipart
 passlib[bcrypt]
 python-jose[cryptography]
-pydantic[email]
-email-validator
