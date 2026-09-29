@@ -1,5 +1,5 @@
 // Base Backend URL (Without trailing path)
-const API_URL = "https://ai-data-analyzer-1ljk.onrender.com";
+const API_URL = "https://ai-data-analyzer-jjkj.onrender.com";
 
 let registeredEmail = "";
 
