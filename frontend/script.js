@@ -1,6 +1,5 @@
-// Base Backend URLs (Ending with trailing slashes to avoid 307 redirects)
-const API_URL = 'https://ai-data-analyzer-jjkj.onrender.com/api/auth';
-const DATA_API_URL = 'https://ai-data-analyzer-jjkj.onrender.com/api/data';
+// Base Backend URL (Without trailing path)
+const API_URL = "https://ai-data-analyzer-1ljk.onrender.com";
 
 let registeredEmail = "";
 
@@ -14,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// SIGNUP FUNCTION
+// 1. SIGNUP FUNCTION
 async function handleSignup(event) {
     if (event) event.preventDefault();
 
@@ -31,7 +30,7 @@ async function handleSignup(event) {
     if (btn) btn.innerText = "Processing...";
 
     try {
-        const response = await fetch(`${API_URL}/signup/`, {
+        const response = await fetch(`${API_URL}/api/auth/signup/`, {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
@@ -51,14 +50,16 @@ async function handleSignup(event) {
             if (otpCard) otpCard.classList.remove('hidden');
             
             const badge = document.getElementById('demoOtpBadge');
-            if (badge) badge.innerText = `Demo OTP: ${data.otpDemo}`;
+            if (badge && data.otpDemo) {
+                badge.innerText = `Demo OTP: ${data.otpDemo}`;
+            }
         } else {
             alert(data.detail || "Signup failed. Account may already exist.");
         }
     } catch (err) {
-        // Fallback retry without trailing slash in case backend route doesn't have it
+        // Fallback retry without trailing slash
         try {
-            const fallbackResponse = await fetch(`${API_URL}/signup`, {
+            const fallbackResponse = await fetch(`${API_URL}/api/auth/signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ fullName, email, password })
@@ -68,17 +69,20 @@ async function handleSignup(event) {
                 registeredEmail = email;
                 document.getElementById('signupCard')?.classList.add('hidden');
                 document.getElementById('otpCard')?.classList.remove('hidden');
-                document.getElementById('demoOtpBadge').innerText = `Demo OTP: ${fallbackData.otpDemo}`;
+                const badge = document.getElementById('demoOtpBadge');
+                if (badge && fallbackData.otpDemo) {
+                    badge.innerText = `Demo OTP: ${fallbackData.otpDemo}`;
+                }
                 return;
             }
         } catch(fErr) {}
-        alert("Backend server is unreachable or sleeping. Please check your internet connection or try again in a moment.");
+        alert("Backend server is unreachable or sleeping. Please check your connection or wait a few seconds.");
     } finally {
         if (btn) btn.innerText = "Create Account";
     }
 }
 
-// OTP SUBMIT FUNCTION
+// 2. OTP VERIFICATION FUNCTION
 async function handleOtpSubmit(event) {
     if (event) event.preventDefault();
 
@@ -90,7 +94,7 @@ async function handleOtpSubmit(event) {
     }
 
     try {
-        const response = await fetch(`${API_URL}/verify-email/`, {
+        const response = await fetch(`${API_URL}/api/auth/verify-email/`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: registeredEmail, otp })
@@ -105,11 +109,25 @@ async function handleOtpSubmit(event) {
             alert(data.detail || "Invalid OTP Code.");
         }
     } catch (err) {
+        // Fallback retry without trailing slash
+        try {
+            const fbRes = await fetch(`${API_URL}/api/auth/verify-email`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: registeredEmail, otp })
+            });
+            const fbData = await fbRes.json();
+            if (fbRes.ok && fbData.success) {
+                alert("Email Verified Successfully! Redirecting to Login...");
+                window.location.href = 'login.html';
+                return;
+            }
+        } catch(e) {}
         alert("Error verifying OTP code.");
     }
 }
 
-// SECURE LOGIN FUNCTION
+// 3. LOGIN FUNCTION
 async function handleLogin(event) {
     if (event) event.preventDefault();
 
@@ -122,7 +140,7 @@ async function handleLogin(event) {
     }
 
     try {
-        const response = await fetch(`${API_URL}/login/`, {
+        const response = await fetch(`${API_URL}/api/auth/login/`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -136,12 +154,12 @@ async function handleLogin(event) {
             alert("Login Successful!");
             window.location.href = 'dashboard.html';
         } else {
-            alert(data.detail || "Invalid Email or Password. Account does not exist!");
+            alert(data.detail || "Invalid Email or Password.");
         }
     } catch (err) {
-        // Fallback retry
+        // Fallback retry without trailing slash
         try {
-            const fbRes = await fetch(`${API_URL}/login`, {
+            const fbRes = await fetch(`${API_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
@@ -159,6 +177,7 @@ async function handleLogin(event) {
     }
 }
 
+// LOGOUT FUNCTION
 function logout() {
     localStorage.clear();
     window.location.href = 'login.html';
